@@ -14,12 +14,14 @@ layout: custom
   </p>
 
 
+  {% if page.episode_url %}
   <p>
     <audio controls>
       <source src="{{page.episode_url}}" type="audio/mpeg">
       Your browser does not support the audio element.
     </audio>
   </p>
+  {% endif %}
 
   {{content}}
 </section>
