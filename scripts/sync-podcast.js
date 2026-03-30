@@ -42,6 +42,13 @@ function extractEpisodeNumber(item, rawTitle) {
   return Number.isFinite(num) ? num : null;
 }
 
+function extractAudioUrl(item) {
+  const enclosure = item.enclosure;
+  if (enclosure?.$?.url) return enclosure.$.url;
+  if (enclosure?.url) return enclosure.url;
+  return "";
+}
+
 function padEpisode(num) {
   return String(num).padStart(3, "0");
 }
@@ -67,16 +74,21 @@ function cleanBody(htmlOrText) {
     .trim();
 }
 
-function buildPostContent({ title, episode, body }) {
-  return `---
-layout: podcast_post
-title: ${JSON.stringify(title)}
-tags:
-episode: ${episode}
----
+function buildPostContent({ title, episode, body, episodeUrl }) {
+  const parts = [
+    "---",
+    "layout: podcast_post",
+    `title: ${JSON.stringify(title)}`,
+    "tags:",
+    `episode: ${episode}`,
+    `episode_url: ${JSON.stringify(episodeUrl)}`,
+    "---",
+    "",
+    body || "Neue Episode.",
+    "",
+  ];
 
-${body || "Neue Episode."}
-`;
+  return parts.join("\n");
 }
 
 async function main() {
@@ -123,10 +135,13 @@ async function main() {
 
     const body = cleanBody(item["content:encoded"] || item.description || "");
     const title = cleanTitle(rawTitle, paddedEpisode);
+    const episodeUrl = extractAudioUrl(item);
+
     const content = buildPostContent({
       title,
       episode,
       body,
+      episodeUrl,
     });
 
     fs.writeFileSync(filepath, content, "utf8");
