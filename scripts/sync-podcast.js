@@ -129,7 +129,18 @@ async function main() {
     const filepath = path.join(POSTS_DIR, filename);
 
     if (fs.existsSync(filepath)) {
-      console.log(`Exists, skipping: ${filename}`);
+      const existingContent = fs.readFileSync(filepath, "utf8");
+      if (!existingContent.includes("episode_url:") && episodeUrl) {
+        const patched = existingContent.replace(
+          /^(---[\s\S]*?)(---)/m,
+          (_, frontMatter, closing) =>
+            `${frontMatter}episode_url: ${JSON.stringify(episodeUrl)}\n${closing}`
+        );
+        fs.writeFileSync(filepath, patched, "utf8");
+        console.log(`Patched episode_url: ${filename}`);
+      } else {
+        console.log(`Exists, skipping: ${filename}`);
+      }
       continue;
     }
 
