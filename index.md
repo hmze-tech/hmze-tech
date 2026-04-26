@@ -32,6 +32,7 @@ layout: custom
   {% for post in site.posts %}
     {% assign currentYear = post.date | date: "%Y" %}
     {% assign currentMonth = post.date | date: "%B" %}
+    {% if post.episode >= 47 %}
     
     {% if currentYear != year %}
     <h1 id="{{ currentYear }}" class="section">{{ currentYear }}</h1>
@@ -46,5 +47,10 @@ layout: custom
     <p>
       <a href="{{ post.url }}">{{ post.title }}</a>
     </p>
+    {% endif %}
   {% endfor %}
+</section>
+
+<section>
+  <h3><a href="/archive/">Archiv (1 &amp; 2 Staffel)</a></h3>
 </section>
