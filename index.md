@@ -29,7 +29,33 @@ layout: custom
 </section>
 
 <section>
+  {% assign latest = site.posts | first %}
+  <div class="latest-episode-body">
+    {% if latest.cover_image %}
+    <img class="latest-episode-cover" src="{{ latest.cover_image }}" alt="{{ latest.title }}">
+    {% elsif site.logo %}
+    <img class="latest-episode-cover" src="{{ site.logo | absolute_url }}" alt="{{ latest.title }}">
+    {% endif %}
+    <div class="latest-episode-content">
+      <h2 class="latest-episode-title"><a href="{{ latest.url }}">{{ latest.title }}</a></h2>
+      <p class="latest-episode-meta">{{ latest.date | date: "%-d. %B %Y" }}</p>
+      {% if latest.episode_url %}
+      <audio class="latest-episode-audio" controls preload="none">
+        <source src="{{ latest.episode_url }}" type="audio/mpeg">
+      </audio>
+      {% endif %}
+      <div class="latest-episode-desc">
+        <span class="latest-episode-desc-short">{{ latest.content | strip_html | truncatewords: 35, "" }} <a class="latest-episode-mehr" href="#" onclick="this.closest('.latest-episode-desc').classList.add('expanded');return false;">... more</a></span>
+        <div class="latest-episode-desc-full">{{ latest.content }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  {% assign latest = site.posts | first %}
   {% for post in site.posts %}
+    {% if post.url == latest.url %}{% continue %}{% endif %}
     {% assign currentYear = post.date | date: "%Y" %}
     {% assign currentMonth = post.date | date: "%B" %}
     {% if post.episode >= 47 %}
@@ -49,8 +75,5 @@ layout: custom
     </p>
     {% endif %}
   {% endfor %}
-</section>
-
-<section>
-  <h3><a href="/archive/">Archiv (1 &amp; 2 Staffel)</a></h3>
+  <a href="/archive/">[Archiv]</a>
 </section>

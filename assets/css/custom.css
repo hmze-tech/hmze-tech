@@ -51,7 +51,6 @@ section {
   border-radius: 10px;
   text-decoration: none;
   color: #111;
-  font-size: 14px;
   font-weight: 500;
   white-space: normal;
   transition: background 0.15s;
@@ -76,4 +75,66 @@ section {
 .platform-btn-multiline small {
   font-size: 10px;
   font-weight: 400;
+}
+
+.latest-episode-body {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.latest-episode-cover {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.latest-episode-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.latest-episode-title {
+  margin: 0 0 6px;
+  line-height: 1.35;
+}
+
+.latest-episode-meta {
+  margin: 0 0 12px;
+}
+
+.latest-episode-audio {
+  width: 100%;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.latest-episode-desc {
+  line-height: 1.6;
+  margin: 0;
+}
+
+.latest-episode-desc-full {
+  display: none;
+}
+
+.latest-episode-desc.expanded .latest-episode-desc-short {
+  display: none;
+}
+
+.latest-episode-desc.expanded .latest-episode-desc-full {
+  display: block;
+}
+
+.latest-episode-mehr {
+  white-space: nowrap;
+}
+
+@media (max-width: 480px) {
+  .latest-episode-cover {
+    width: 80px;
+    height: 80px;
+  }
 }

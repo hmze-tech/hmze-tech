@@ -49,6 +49,13 @@ function extractAudioUrl(item) {
   return "";
 }
 
+function extractCoverImage(item) {
+  const img = item["itunes:image"];
+  if (img?.$?.href) return img.$.href;
+  if (typeof img === "string") return img;
+  return "";
+}
+
 function padEpisode(num) {
   return String(num).padStart(3, "0");
 }
@@ -74,7 +81,7 @@ function cleanBody(htmlOrText) {
     .trim();
 }
 
-function buildPostContent({ title, episode, body, episodeUrl }) {
+function buildPostContent({ title, episode, body, episodeUrl, coverImage }) {
   const parts = [
     "---",
     "layout: podcast_post",
@@ -82,12 +89,9 @@ function buildPostContent({ title, episode, body, episodeUrl }) {
     "tags:",
     `episode: ${episode}`,
     `episode_url: ${JSON.stringify(episodeUrl)}`,
-    "---",
-    "",
-    body || "Neue Episode.",
-    "",
   ];
-
+  if (coverImage) parts.push(`cover_image: ${JSON.stringify(coverImage)}`);
+  parts.push("---", "", body || "Neue Episode.", "");
   return parts.join("\n");
 }
 
@@ -128,16 +132,31 @@ async function main() {
     const filename = `${datePart}-${paddedEpisode}.md`;
     const filepath = path.join(POSTS_DIR, filename);
 
+    const episodeUrl = extractAudioUrl(item);
+    const coverImage = extractCoverImage(item);
+
     if (fs.existsSync(filepath)) {
-      const existingContent = fs.readFileSync(filepath, "utf8");
+      let existingContent = fs.readFileSync(filepath, "utf8");
+      let patched = false;
       if (!existingContent.includes("episode_url:") && episodeUrl) {
-        const patched = existingContent.replace(
+        existingContent = existingContent.replace(
           /^(---[\s\S]*?)(---)/m,
           (_, frontMatter, closing) =>
             `${frontMatter}episode_url: ${JSON.stringify(episodeUrl)}\n${closing}`
         );
-        fs.writeFileSync(filepath, patched, "utf8");
-        console.log(`Patched episode_url: ${filename}`);
+        patched = true;
+      }
+      if (!existingContent.includes("cover_image:") && coverImage) {
+        existingContent = existingContent.replace(
+          /^(---[\s\S]*?)(---)/m,
+          (_, frontMatter, closing) =>
+            `${frontMatter}cover_image: ${JSON.stringify(coverImage)}\n${closing}`
+        );
+        patched = true;
+      }
+      if (patched) {
+        fs.writeFileSync(filepath, existingContent, "utf8");
+        console.log(`Patched: ${filename}`);
       } else {
         console.log(`Exists, skipping: ${filename}`);
       }
@@ -146,13 +165,13 @@ async function main() {
 
     const body = cleanBody(item["content:encoded"] || item.description || "");
     const title = cleanTitle(rawTitle, paddedEpisode);
-    const episodeUrl = extractAudioUrl(item);
 
     const content = buildPostContent({
       title,
       episode,
       body,
       episodeUrl,
+      coverImage,
     });
 
     fs.writeFileSync(filepath, content, "utf8");
