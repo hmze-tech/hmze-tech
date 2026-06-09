@@ -59,7 +59,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
   margin-bottom: 6px;
   pointer-events: none;
 }
@@ -155,7 +155,7 @@
 .site-header__wordmark-text {
   font-family: var(--font-family-mono);
   font-weight: var(--font-weight-regular);
-  font-size: 11px;
+  font-size: var(--font-size-xs);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-text-primary);
@@ -238,7 +238,8 @@
   color: var(--color-text-secondary);
 }
 
-.site-footer__nav-link:hover {
+.site-footer__nav-link:hover,
+.site-footer__nav-link.is-active {
   color: var(--color-text-primary);
   text-decoration: none;
 }

@@ -31,7 +31,7 @@
    * designer before implementing.
    *
    * Placeholder (DO NOT USE until confirmed):
-   * --color-accent: /* unknown — orange visible in screenshots, value TBD */;
+   * --color-accent: unknown (orange visible in screenshots, value TBD);
    */
 
 
@@ -71,6 +71,7 @@
    * (Only three distinct sizes appear in the design)
    * =================================================================== */
 
+  --font-size-xs:  11px; /* wordmark label (HMZE × IMPALA SEARCH) */
   --font-size-sm:  16px; /* body, labels, metadata, CTA text */
   --font-size-md:  24px; /* section/accordion headings        */
   --font-size-lg:  32px; /* episode title (hero + list)       */
