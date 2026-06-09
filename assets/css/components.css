@@ -822,3 +822,59 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+
+/* =============================================================================
+   ARCHIVE PAGE
+   Header + full episode list (reuses .home-episodes__* item classes)
+   ============================================================================= */
+
+
+/* ------------------------------------------------------------------
+   Page wrapper — matches post-page width for consistency
+   ------------------------------------------------------------------ */
+
+.archive-page {
+  padding-top: var(--space-5);
+  padding-bottom: var(--space-8);
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+
+/* ------------------------------------------------------------------
+   Archive header — title + episode count
+   ------------------------------------------------------------------ */
+
+.archive-header {
+  margin-bottom: var(--space-6);
+}
+
+.archive-header__title {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.archive-header__count {
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+}
+
+
+/* ------------------------------------------------------------------
+   Archive episode list
+   Item styles reuse .home-episodes__* classes — no duplication.
+   Only the section wrapper differs (no bottom padding needed here;
+   the page wrapper provides it).
+   ------------------------------------------------------------------ */
+
+.archive-episodes {
+  margin-top: 0;
+}
