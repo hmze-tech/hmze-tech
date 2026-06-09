@@ -1,14 +1,8 @@
 <header class="site-header" role="banner">
   <div class="site-header__inner">
 
-    <!--
-      Logo: left column.
-      Treatment: JPEG image (logo_2026_v1.jpeg). Figma node 2:1921 contains
-      a vector asset — replace <img> with inline SVG once export is available
-      so it can inherit color in dark/light contexts.
-    -->
     <a class="site-header__logo" href="{{ '/' | relative_url }}" aria-label="{{ site.title }} — Home">
-      <img src="{{ '/assets/img/logo_2026_v1.jpeg' | relative_url }}"
+      <img src="{{ '/assets/img/logo.svg' | relative_url }}"
            alt="{{ site.title }}"
            width="165" height="69">
     </a>
@@ -47,16 +41,11 @@
 
     </nav>
 
-    <!--
-      Wordmark: right column — "HMZE × IMPALA SEARCH".
-      TODO: Replace with inline SVG from Figma node 2:1901 (typography as outlines).
-      The × color (#e85d2f) is estimated from screenshots — confirm with designer.
-      Hidden on viewports < 640px via components.css media query.
-    -->
-    <div class="site-header__wordmark" aria-label="HMZE × Impala Search">
-      <span class="site-header__wordmark-text">
-        HMZE <span class="site-header__wordmark-x">×</span> IMPALA SEARCH
-      </span>
+    <!-- Wordmark: right column. SVG from Figma node 2:1901 (typography as outlines). -->
+    <div class="site-header__wordmark">
+      <img src="{{ '/assets/img/wordmark.svg' | relative_url }}"
+           alt="HMZE × Impala Search"
+           width="388" height="16">
     </div>
 
   </div>

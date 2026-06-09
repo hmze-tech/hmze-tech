@@ -138,12 +138,7 @@
 
 
 /* ------------------------------------------------------------------
-   Header right wordmark — "HMZE × IMPALA SEARCH"
-   AMBIGUITY: In Figma this is rendered as vector paths (typography-as-outlines),
-   not live text. We implement it as styled HTML text until the SVG export
-   is available from Figma. Replace the .site-header__wordmark content
-   with <img src="/assets/img/hmze-impala-wordmark.svg" alt="HMZE × Impala Search">
-   when the export is ready.
+   Header right wordmark — SVG from Figma node 2:1901
    ------------------------------------------------------------------ */
 
 .site-header__wordmark {
@@ -152,24 +147,9 @@
   align-items: center;
 }
 
-.site-header__wordmark-text {
-  font-family: var(--font-family-mono);
-  font-weight: var(--font-weight-regular);
-  font-size: var(--font-size-xs);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-text-primary);
-  white-space: nowrap;
-  line-height: 1.6;
-}
-
-/*
- * AMBIGUITY: The orange "×" color was not extractable from Figma (it is inside
- * an SVG image asset). Using a warm near-orange (sRGB visible in screenshots)
- * as a best estimate. Replace with the confirmed value from the design team.
- */
-.site-header__wordmark-x {
-  color: #e85d2f;  /* estimated from screenshot; confirm with designer */
+.site-header__wordmark img {
+  max-width: 100%;
+  height: auto;
 }
 
 /* Hide wordmark on very small screens to avoid crowding the nav */
@@ -255,16 +235,10 @@
 }
 
 .site-footer__lockup img {
-  max-height: 80px;
+  max-height: 160px;   /* lockup SVG is portrait (538×787); constrain height */
   width: auto;
   object-fit: contain;
 }
-
-/*
- * TODO: Replace the img placeholder with the SVG lockup exported from Figma.
- * The Figma center element is the "beyond / [vibe_coding] HMZE × IMPALA SEARCH"
- * full-color vector lockup including the orange vertical accent line.
- */
 
 /* Footer right social icons */
 .site-footer__social {

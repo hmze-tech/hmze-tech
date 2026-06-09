@@ -25,14 +25,11 @@
    * NOTE – Orange accent:
    * An orange/amber accent color is clearly visible in screenshots (the
    * vertical separator line in the hero and the "×" glyph in the HMZE ×
-   * IMPALA SEARCH lockup). Both are rendered as vector/SVG image assets in
-   * Figma and the exact hex is NOT exposed in the design-context code output.
-   * Do NOT guess. Resolve this value by sampling the SVG or asking the
-   * designer before implementing.
-   *
-   * Placeholder (DO NOT USE until confirmed):
-   * --color-accent: unknown (orange visible in screenshots, value TBD);
+   * IMPALA SEARCH lockup). Confirmed by sampling the exported SVG paths
+   * from Figma nodes 2:1984 (footer lockup) and 2:1901 (wordmark).
    */
+
+  --color-accent: #FF6100; /* orange — × glyph, footer vertical line */
 
 
   /* ===================================================================
