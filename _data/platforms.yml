@@ -1,0 +1,23 @@
+- id: spotify
+  name: Spotify
+  url: https://open.spotify.com/show/5wgcluRAVV7zEa9Zo4po5B
+  icon: /assets/img/icons/spotify.svg
+  label: Listen on Spotify
+
+- id: apple-podcasts
+  name: Apple Podcasts
+  url: https://podcasts.apple.com/de/podcast/hmze/id1869935041
+  icon: /assets/img/icons/apple-podcasts.svg
+  label: Listen on Apple Podcasts
+
+- id: youtube
+  name: YouTube
+  url: https://www.youtube.com/@HMZE-BeyondVibeCoding
+  icon: /assets/img/icons/youtube.svg
+  label: Watch on YouTube
+
+- id: rss
+  name: RSS
+  url: https://anchor.fm/s/10dff5920/podcast/rss
+  icon: /assets/img/icons/rss.svg
+  label: Subscribe via RSS

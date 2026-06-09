@@ -1,0 +1,116 @@
+---
+layout: default
+---
+
+{% if page.url == "/" %}
+
+{% assign latest = site.posts | first %}
+
+<div class="page-home">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       HERO — tagline + podcast platform links
+       Platform links driven by _data/platforms.yml.
+       Figma node 2:856 not inspected (MCP rate limit); judgment call:
+       minimal tagline + pill buttons, no background treatment.
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="home-hero">
+    <p class="home-hero__tagline">{{ site.description }}</p>
+    <nav class="home-hero__platforms" aria-label="Listen on">
+      {% for platform in site.data.platforms %}
+      <a class="platform-btn"
+         href="{{ platform.url }}"
+         aria-label="{{ platform.label }}"
+         target="_blank" rel="noopener noreferrer">
+        <img src="{{ platform.icon | relative_url }}" alt="" width="22" height="22">
+        <span>{{ platform.name }}</span>
+      </a>
+      {% endfor %}
+    </nav>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       LATEST EPISODE — featured card
+       Cover image falls back to site.logo if cover_image not set.
+       Description truncated at 40 words; "Read more" links to post.
+       ═══════════════════════════════════════════════════════════ -->
+  {% if latest %}
+  <section class="home-latest">
+    <article class="episode-card episode-card--featured">
+
+      <div class="episode-card__media">
+        {% if latest.cover_image %}
+        <img class="episode-card__cover"
+             src="{{ latest.cover_image }}"
+             alt="{{ latest.title }}"
+             loading="eager">
+        {% elsif site.logo %}
+        <img class="episode-card__cover"
+             src="{{ site.logo | absolute_url }}"
+             alt="{{ site.title }}"
+             loading="eager">
+        {% endif %}
+      </div>
+
+      <div class="episode-card__body">
+        <h2 class="episode-card__title">
+          <a href="{{ latest.url | relative_url }}">{{ latest.title }}</a>
+        </h2>
+        <p class="episode-card__date">{{ latest.date | date: "%-d. %B %Y" }}</p>
+        {% if latest.episode_url %}
+        <audio class="episode-card__audio" controls preload="none">
+          <source src="{{ latest.episode_url }}" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+        {% endif %}
+        <p class="episode-card__desc">
+          {{ latest.content | strip_html | truncatewords: 40 }}
+        </p>
+        <a class="btn-cta" href="{{ latest.url | relative_url }}">Read more</a>
+      </div>
+
+    </article>
+  </section>
+  {% endif %}
+
+  <!-- ═══════════════════════════════════════════════════════════
+       EPISODE LIST — episodes 47+ grouped by year and month.
+       Filtering logic preserved from index.md verbatim.
+       Latest episode is skipped (already shown above).
+       Archive link at the bottom points to /archive/.
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="home-episodes">
+    {% assign year = "" %}
+    {% assign month = "" %}
+    {% for post in site.posts %}
+      {% if post.url == latest.url %}{% continue %}{% endif %}
+      {% assign currentYear = post.date | date: "%Y" %}
+      {% assign currentMonth = post.date | date: "%B" %}
+      {% if post.episode >= 47 %}
+
+        {% if currentYear != year %}
+        <h2 class="home-episodes__year" id="{{ currentYear }}">{{ currentYear }}</h2>
+        {% assign year = currentYear %}
+        {% endif %}
+
+        {% if currentMonth != month %}
+        <h3 class="home-episodes__month" id="{{ currentMonth }}">{{ currentMonth }}</h3>
+        {% assign month = currentMonth %}
+        {% endif %}
+
+        <p class="home-episodes__item">
+          <a class="home-episodes__link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        </p>
+
+      {% endif %}
+    {% endfor %}
+    <a class="btn-cta home-episodes__archive" href="{{ '/archive/' | relative_url }}">[Archiv]</a>
+  </section>
+
+</div>
+
+{% else %}
+
+{{ content }}
+
+{% endif %}

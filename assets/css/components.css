@@ -320,3 +320,227 @@
   opacity: 0.85;
   text-decoration: none;
 }
+
+
+/* =============================================================================
+   HOME PAGE
+   Sections: Hero, Latest episode card, Episode list
+   ============================================================================= */
+
+
+/* ------------------------------------------------------------------
+   Hero — tagline + platform pill buttons
+   ------------------------------------------------------------------ */
+
+.home-hero {
+  padding: clamp(var(--space-5), 5vw, var(--space-8)) 0;
+  text-align: center;
+}
+
+.home-hero__tagline {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-5);
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.home-hero__platforms {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+/* Platform button — icon + label in a pill */
+.platform-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface-card);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-cta);
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  transition: opacity 0.15s ease;
+  white-space: nowrap;
+}
+
+.platform-btn:hover {
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+.platform-btn img {
+  display: block;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+
+/* ------------------------------------------------------------------
+   Latest episode — featured card
+   ------------------------------------------------------------------ */
+
+.home-latest {
+  margin-bottom: var(--space-8);
+}
+
+.episode-card {
+  background: var(--color-surface-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+/* Two-column at tablet+: cover | body */
+.episode-card--featured {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .episode-card--featured {
+    grid-template-columns: auto 1fr;
+  }
+}
+
+.episode-card__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(var(--space-4), 4vw, var(--space-7));
+  padding-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .episode-card__media {
+    padding-bottom: clamp(var(--space-4), 4vw, var(--space-7));
+  }
+}
+
+.episode-card__cover {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius-artwork);
+  box-shadow: var(--shadow-artwork-lg);
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .episode-card__cover {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+.episode-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: clamp(var(--space-4), 4vw, var(--space-7));
+  align-self: center;
+}
+
+.episode-card__title {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+}
+
+.episode-card__title a {
+  color: inherit;
+  transition: opacity 0.15s ease;
+}
+
+.episode-card__title a:hover {
+  text-decoration: none;
+  opacity: 0.70;
+}
+
+.episode-card__date {
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-body);
+}
+
+.episode-card__audio {
+  width: 100%;
+}
+
+.episode-card__desc {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+}
+
+
+/* ------------------------------------------------------------------
+   Episode list — grouped by year / month
+   ------------------------------------------------------------------ */
+
+.home-episodes {
+  margin-top: var(--space-5);
+  padding-bottom: var(--space-8);
+}
+
+.home-episodes__year {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-3);
+}
+
+/* First year heading needs no extra top margin — section provides spacing */
+.home-episodes > h2:first-of-type {
+  margin-top: 0;
+}
+
+.home-episodes__month {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.home-episodes__item {
+  margin-bottom: var(--space-3);
+}
+
+.home-episodes__link {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+}
+
+.home-episodes__link:hover {
+  text-decoration: underline;
+}
+
+.home-episodes__archive {
+  display: inline-flex;
+  margin-top: var(--space-7);
+}
