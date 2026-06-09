@@ -1,0 +1,321 @@
+/* =============================================================================
+   components.css — Reusable UI components
+   Sections: Nav pill, Footer card, Social icon list, CTA button, Episode card
+   ============================================================================= */
+
+
+/* ------------------------------------------------------------------
+   Social icon list (shared by nav and footer)
+   ------------------------------------------------------------------ */
+
+.social-icons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);   /* 36px between icons — condensed for mobile */
+}
+
+.social-icons__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-5);    /* 36px */
+  height: var(--space-5);
+  flex-shrink: 0;
+  transition: opacity 0.15s ease;
+}
+
+.social-icons__link:hover {
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+.social-icons__link img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+/* ------------------------------------------------------------------
+   Site nav — header nav with social pill
+   ------------------------------------------------------------------ */
+
+.site-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+
+/*
+ * Progress indicator — decorative nav scrubber (Figma: thin 4px bar above the pill,
+ * with a partial fill showing ~35% progress and a small caret above).
+ * AMBIGUITY: This element has no defined interactive state in the Figma;
+ * it appears to be a "now playing" audio progress indicator. Implemented
+ * here as static/decorative. Requires JavaScript to become functional.
+ */
+.site-nav__progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 6px;
+  pointer-events: none;
+}
+
+.site-nav__progress-caret {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--color-track-active);
+}
+
+.site-nav__progress-track {
+  width: 280px;
+  height: var(--space-1);       /* 4px */
+  background: var(--color-track-inactive);
+  border-radius: var(--radius-track);
+  overflow: hidden;
+  position: relative;
+}
+
+.site-nav__progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 35%;                   /* static placeholder; JS will drive this */
+  background: var(--color-track-active);
+  border-radius: var(--radius-track);
+}
+
+/* The social pill */
+.site-nav__pill {
+  background: var(--color-surface-card);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-nav);
+  display: flex;
+  align-items: center;
+  gap: clamp(var(--space-3), 4.2vw, var(--space-8));  /* 20–80px responsive gap */
+  padding: var(--space-3) clamp(var(--space-3), 4.2vw, var(--space-8));
+}
+
+/* Responsive: hide progress bar on mobile to save space */
+@media (max-width: 767px) {
+  .site-nav__progress {
+    display: none;
+  }
+}
+
+@media (min-width: 1280px) {
+  .site-nav__progress-track {
+    width: 476px;   /* exact Figma width at desktop */
+  }
+}
+
+
+/* ------------------------------------------------------------------
+   Header logo
+   ------------------------------------------------------------------ */
+
+.site-header__logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.site-header__logo img {
+  height: 48px;   /* scaled down from Figma 69px for typical viewport */
+  width: auto;
+  object-fit: contain;
+}
+
+@media (min-width: 1280px) {
+  .site-header__logo img {
+    height: 69px;   /* Figma exact */
+  }
+}
+
+
+/* ------------------------------------------------------------------
+   Header right wordmark — "HMZE × IMPALA SEARCH"
+   AMBIGUITY: In Figma this is rendered as vector paths (typography-as-outlines),
+   not live text. We implement it as styled HTML text until the SVG export
+   is available from Figma. Replace the .site-header__wordmark content
+   with <img src="/assets/img/hmze-impala-wordmark.svg" alt="HMZE × Impala Search">
+   when the export is ready.
+   ------------------------------------------------------------------ */
+
+.site-header__wordmark {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.site-header__wordmark-text {
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  line-height: 1.6;
+}
+
+/*
+ * AMBIGUITY: The orange "×" color was not extractable from Figma (it is inside
+ * an SVG image asset). Using a warm near-orange (sRGB visible in screenshots)
+ * as a best estimate. Replace with the confirmed value from the design team.
+ */
+.site-header__wordmark-x {
+  color: #e85d2f;  /* estimated from screenshot; confirm with designer */
+}
+
+/* Hide wordmark on very small screens to avoid crowding the nav */
+@media (max-width: 639px) {
+  .site-header__wordmark {
+    display: none;
+  }
+  .site-header__inner {
+    grid-template-columns: auto 1fr;
+  }
+}
+
+
+/* ------------------------------------------------------------------
+   Footer card
+   ------------------------------------------------------------------ */
+
+.site-footer__card {
+  width: 100%;
+  max-width: var(--bp-2xl);
+  background: var(--color-surface-card);
+  border-radius: var(--radius-card);   /* 60px */
+  box-shadow: var(--shadow-card);
+  padding: clamp(2rem, 5vw, 5rem) clamp(1.5rem, 5vw, 5rem);
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "lockup"
+    "nav"
+    "social";
+  gap: var(--space-5);
+  align-items: center;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .site-footer__card {
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-areas: "nav lockup social";
+    text-align: left;
+    min-height: 200px;
+  }
+}
+
+/* Footer left nav links */
+.site-footer__nav {
+  grid-area: nav;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);    /* 10px */
+  align-items: flex-start;
+}
+
+@media (max-width: 767px) {
+  .site-footer__nav {
+    align-items: center;
+  }
+}
+
+.site-footer__nav-link {
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);     /* 16px */
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+}
+
+.site-footer__nav-link:hover {
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+/* Footer center lockup */
+.site-footer__lockup {
+  grid-area: lockup;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.site-footer__lockup img {
+  max-height: 80px;
+  width: auto;
+  object-fit: contain;
+}
+
+/*
+ * TODO: Replace the img placeholder with the SVG lockup exported from Figma.
+ * The Figma center element is the "beyond / [vibe_coding] HMZE × IMPALA SEARCH"
+ * full-color vector lockup including the orange vertical accent line.
+ */
+
+/* Footer right social icons */
+.site-footer__social {
+  grid-area: social;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(var(--space-3), 3vw, var(--space-6));
+}
+
+@media (max-width: 767px) {
+  .site-footer__social {
+    justify-content: center;
+  }
+}
+
+/* Footer copyright line (below card) */
+.site-footer__copyright {
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+
+/* ------------------------------------------------------------------
+   CTA button (pill-shaped, filled)
+   Used for "Read more", "View more episodes", etc.
+   ------------------------------------------------------------------ */
+
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-cta);
+  color: var(--color-text-on-cta);
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  padding: var(--space-2) var(--space-3);   /* 10px 20px */
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-cta);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.btn-cta:hover {
+  opacity: 0.85;
+  text-decoration: none;
+}

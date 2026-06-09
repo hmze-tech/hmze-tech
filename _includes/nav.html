@@ -1,0 +1,69 @@
+<header class="site-header" role="banner">
+  <div class="site-header__inner">
+
+    <!-- Logo: left — "beyond / [vibe_coding]" -->
+    <!-- TODO: Replace img with SVG export from Figma (node 2:1921 / "Vector" logo asset) -->
+    <a class="site-header__logo" href="{{ '/' | relative_url }}" aria-label="{{ site.title }} — Home">
+      <img src="{{ '/assets/img/logo_2026_v1.jpeg' | relative_url }}"
+           alt="{{ site.title }}"
+           width="165" height="69">
+    </a>
+
+    <!-- Nav: center — social platform links in a pill -->
+    <nav class="site-nav" aria-label="Listen on">
+
+      <!--
+        Progress indicator (decorative). In Figma this appears as a thin
+        progress bar + caret above the pill — likely a "now playing" scrubber.
+        No interactive state is defined in the design. Rendered static here.
+        See components.css .site-nav__progress for implementation notes.
+      -->
+      <div class="site-nav__progress" aria-hidden="true">
+        <div class="site-nav__progress-caret"></div>
+        <div class="site-nav__progress-track">
+          <div class="site-nav__progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="site-nav__pill">
+        <a class="social-icons__link"
+           href="https://open.spotify.com/show/5wgcluRAVV7zEa9Zo4po5B"
+           aria-label="Listen on Spotify"
+           target="_blank" rel="noopener noreferrer">
+          <img src="{{ '/assets/img/icons/spotify.svg' | relative_url }}" alt="" width="36" height="36">
+        </a>
+        <a class="social-icons__link"
+           href="https://podcasts.apple.com/de/podcast/hmze/id1869935041"
+           aria-label="Listen on Apple Podcasts"
+           target="_blank" rel="noopener noreferrer">
+          <img src="{{ '/assets/img/icons/apple-podcasts.svg' | relative_url }}" alt="" width="36" height="36">
+        </a>
+        <a class="social-icons__link"
+           href="https://www.youtube.com/@HMZE-BeyondVibeCoding"
+           aria-label="Watch on YouTube"
+           target="_blank" rel="noopener noreferrer">
+          <img src="{{ '/assets/img/icons/youtube.svg' | relative_url }}" alt="" width="36" height="36">
+        </a>
+        <a class="social-icons__link"
+           href="https://www.linkedin.com/company/73990683/"
+           aria-label="Follow on LinkedIn"
+           target="_blank" rel="noopener noreferrer">
+          <img src="{{ '/assets/img/icons/linkedin.svg' | relative_url }}" alt="" width="36" height="36">
+        </a>
+      </div>
+    </nav>
+
+    <!-- Right: HMZE × IMPALA SEARCH wordmark -->
+    <!--
+      TODO: Replace this text rendering with the SVG export from Figma
+      (node 2:1901 "Group 11" — typography rendered as vector paths).
+      The orange "×" color is estimated from screenshots; confirm with designer.
+    -->
+    <div class="site-header__wordmark" aria-label="HMZE × Impala Search">
+      <span class="site-header__wordmark-text">
+        HMZE <span class="site-header__wordmark-x">×</span> IMPALA SEARCH
+      </span>
+    </div>
+
+  </div>
+</header>
