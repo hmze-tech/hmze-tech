@@ -303,7 +303,11 @@
 
 
 /* ------------------------------------------------------------------
-   Hero — tagline + platform pill buttons
+   Hero — three-column lockup layout
+   Left/right: flanking copy. Center: bracket lockup (logo.svg +
+   CSS-drawn brackets) with an orange accent line above, and the
+   HMZE × IMPALA SEARCH wordmark below. A full-width intro paragraph
+   sits underneath the three-column row.
    ------------------------------------------------------------------ */
 
 .home-hero {
@@ -311,23 +315,102 @@
   text-align: center;
 }
 
-.home-hero__tagline {
-  font-family: var(--font-family-sans);
-  font-weight: var(--font-weight-light);
-  font-size: var(--font-size-md);
-  line-height: var(--line-height-normal);
-  color: var(--color-text-primary);
-  margin-bottom: var(--space-5);
-  max-width: 640px;
-  margin-left: auto;
-  margin-right: auto;
+.home-hero__top {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: center;
+  gap: var(--space-8);
 }
 
-.home-hero__platforms {
+@media (min-width: 1024px) {
+  .home-hero__top {
+    grid-template-columns: 1fr minmax(320px, 460px) 1fr;
+  }
+}
+
+/* Flanking copy columns */
+.home-hero__copy {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+/* Center column: lockup + wordmark */
+.home-hero__center {
+  position: relative;
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  padding-top: clamp(var(--space-5), 6vw, var(--space-8));
+}
+
+/* Vertical orange accent line — runs from the nav progress bar
+   down into the bracket lockup. */
+.home-hero__center::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: clamp(var(--space-5), 6vw, var(--space-8));
+  background: var(--color-accent);
+}
+
+/* Bracket lockup — "[" and "]" drawn with CSS borders flanking
+   the beyond {vibe_coding} mark (logo.svg). */
+.home-hero__lockup {
+  position: relative;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: var(--space-3);
+  gap: var(--space-5);
+  padding: var(--space-6) var(--space-5);
+}
+
+.home-hero__lockup::before,
+.home-hero__lockup::after {
+  content: "";
+  display: block;
+  flex-shrink: 0;
+  align-self: stretch;
+  width: var(--space-5);
+  border: 8px solid var(--color-text-primary);
+}
+
+.home-hero__lockup::before {
+  border-right: none;
+}
+
+.home-hero__lockup::after {
+  border-left: none;
+}
+
+.home-hero__logo {
+  width: clamp(140px, 14vw, 220px);
+  height: auto;
+}
+
+.home-hero__wordmark img {
+  width: clamp(220px, 24vw, 360px);
+  height: auto;
+}
+
+/* Full-width intro paragraph below the lockup */
+.home-hero__intro {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  margin: var(--space-8) auto 0;
 }
 
 /* Platform button — icon + label in a pill */

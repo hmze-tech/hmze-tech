@@ -9,24 +9,49 @@ layout: default
 <div class="page-home">
 
   <!-- ═══════════════════════════════════════════════════════════
-       HERO — tagline + podcast platform links
-       Platform links driven by _data/platforms.yml.
-       Figma node 2:856 not inspected (MCP rate limit); judgment call:
-       minimal tagline + pill buttons, no background treatment.
+       HERO — three-column lockup layout
+       Figma reference: redesign/Beyond Vibe Coding - Website.png
+       (Figma MCP unavailable this session — measured from the
+       provided static export, not a live node inspection).
+       Left/right copy is hardcoded (not post-specific). Center
+       column reuses logo.svg (bracket lockup via CSS borders +
+       orange accent line via ::before) and wordmark.svg below.
+       Platform links live only in the nav pill (_includes/nav.html).
        ═══════════════════════════════════════════════════════════ -->
   <section class="home-hero">
-    <p class="home-hero__tagline">{{ site.description }}</p>
-    <nav class="home-hero__platforms" aria-label="Listen on">
-      {% for platform in site.data.platforms %}
-      <a class="platform-btn"
-         href="{{ platform.url }}"
-         aria-label="{{ platform.label }}"
-         target="_blank" rel="noopener noreferrer">
-        <img src="{{ platform.icon | relative_url }}" alt="" width="22" height="22">
-        <span>{{ platform.name }}</span>
-      </a>
-      {% endfor %}
-    </nav>
+    <div class="home-hero__top">
+      <p class="home-hero__copy home-hero__copy--left">
+        Beyond Vibe Coding is a weekly podcast for senior engineering leaders
+        navigating the impact of AI on how software gets built.
+      </p>
+
+      <div class="home-hero__center">
+        <div class="home-hero__lockup">
+          <img class="home-hero__logo"
+               src="{{ '/assets/img/logo.svg' | relative_url }}"
+               alt="{{ site.title }}"
+               width="165" height="69">
+        </div>
+        <div class="home-hero__wordmark">
+          <img src="{{ '/assets/img/wordmark.svg' | relative_url }}"
+               alt="HMZE × Impala Search"
+               width="388" height="16">
+        </div>
+      </div>
+
+      <p class="home-hero__copy home-hero__copy--right">
+        Hosted by Sebastian Heide-Meyer zu Erpen and André Neubauer in
+        partnership with Impala Search, Germany's leading technology and
+        executive search agency.
+      </p>
+    </div>
+
+    <p class="home-hero__intro">
+      Each episode brings together the leaders shaping the next era of
+      engineering - from how teams are adopting AI, to what changes for
+      product and architecture, to what stays unchanged when the tools
+      shift underneath us.
+    </p>
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════
