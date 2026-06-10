@@ -9,13 +9,11 @@ layout: default
 <div class="page-home">
 
   <!-- ═══════════════════════════════════════════════════════════
-       HERO — three-column lockup layout
-       Figma reference: redesign/Beyond Vibe Coding - Website.png
-       (Figma MCP unavailable this session — measured from the
-       provided static export, not a live node inspection).
-       Left/right copy is hardcoded (not post-specific). Center
-       column reuses logo.svg (bracket lockup via CSS borders +
-       orange accent line via ::before) and wordmark.svg below.
+       HERO — flanking copy + full-bleed lockup image
+       Left/right copy is hardcoded (not post-specific). The lockup
+       (bracket composition + HMZE × IMPALA SEARCH wordmark) is a
+       single SVG asset exported from Figma; the orange accent line
+       above it is drawn separately in CSS.
        Platform links live only in the nav pill (_includes/nav.html).
        ═══════════════════════════════════════════════════════════ -->
   <section class="home-hero">
@@ -25,26 +23,18 @@ layout: default
         navigating the impact of AI on how software gets built.
       </p>
 
-      <div class="home-hero__center">
-        <div class="home-hero__lockup">
-          <img class="home-hero__logo"
-               src="{{ '/assets/img/logo.svg' | relative_url }}"
-               alt="{{ site.title }}"
-               width="165" height="69">
-        </div>
-        <div class="home-hero__wordmark">
-          <img src="{{ '/assets/img/wordmark.svg' | relative_url }}"
-               alt="HMZE × Impala Search"
-               width="388" height="16">
-        </div>
-      </div>
-
       <p class="home-hero__copy home-hero__copy--right">
         Hosted by Sebastian Heide-Meyer zu Erpen and André Neubauer in
         partnership with Impala Search, Germany's leading technology and
         executive search agency.
       </p>
     </div>
+
+    <section class="hero-lockup">
+      <img src="{{ '/assets/img/hero-lockup.svg' | relative_url }}"
+           alt="Beyond Vibe Coding — HMZE × Impala Search"
+           class="hero-lockup__image">
+    </section>
 
     <p class="home-hero__intro">
       Each episode brings together the leaders shaping the next era of
