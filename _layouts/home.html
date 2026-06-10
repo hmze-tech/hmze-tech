@@ -99,38 +99,76 @@ layout: default
   {% endif %}
 
   <!-- ═══════════════════════════════════════════════════════════
-       EPISODE LIST — episodes 47+ grouped by year and month.
-       Filtering logic preserved from index.md verbatim.
+       EPISODE LIST — accordion, episodes 47+ (47+ filter preserved
+       from the previous implementation; older episodes live in
+       the archive only).
        Latest episode is skipped (already shown above).
-       Archive link at the bottom points to /archive/.
+       Figma reference: redesign/Beyond Vibe Coding - Website.png
+       (Figma MCP unavailable this session — measured from the
+       provided static export, not a live node inspection).
+
+       Label format "S.01 EP.XX - <title>": post front matter only
+       has a sequential `episode` number (no season field), so
+       season is hardcoded to "01" per the task instructions. The
+       "#0XX " prefix is stripped from post.title to get <title>.
+
+       <details>/<summary> provide native open/close semantics with
+       no JS required; assets/js/accordion.js progressively enhances
+       this to enforce "one row open at a time".
        ═══════════════════════════════════════════════════════════ -->
-  <section class="home-episodes">
-    {% assign year = "" %}
-    {% assign month = "" %}
-    {% for post in site.posts %}
-      {% if post.url == latest.url %}{% continue %}{% endif %}
-      {% assign currentYear = post.date | date: "%Y" %}
-      {% assign currentMonth = post.date | date: "%B" %}
-      {% if post.episode >= 47 %}
+  <section class="home-accordion">
+    <div class="accordion" data-accordion>
+      {% for post in site.posts %}
+        {% if post.url == latest.url %}{% continue %}{% endif %}
+        {% if post.episode >= 47 %}
 
-        {% if currentYear != year %}
-        <h2 class="home-episodes__year" id="{{ currentYear }}">{{ currentYear }}</h2>
-        {% assign year = currentYear %}
+          {% assign title_parts = post.title | split: " " %}
+          {% assign episode_title = title_parts | slice: 1, 99 | join: " " %}
+
+          <details class="accordion__item">
+            <summary class="accordion__summary">
+              <span class="accordion__label">S.01 EP.{{ post.episode }} - {{ episode_title }}</span>
+              <span class="accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="accordion__panel">
+              <div class="accordion__cover">
+                {% if post.cover_image %}
+                <img src="{{ post.cover_image }}" alt="" loading="lazy">
+                {% else %}
+                <div class="accordion__cover-placeholder" aria-hidden="true"></div>
+                {% endif %}
+              </div>
+              <div class="accordion__content">
+                <p class="accordion__desc">{{ post.content | strip_html | truncatewords: 50 }}</p>
+                <a class="accordion__readmore" href="{{ post.url | relative_url }}">Read more</a>
+                <div class="accordion__meta">
+                  <div class="accordion__controls">
+                    {% if post.episode_url %}
+                    <a class="accordion__control" href="{{ post.episode_url }}" aria-label="Play episode" target="_blank" rel="noopener noreferrer">▶</a>
+                    {% endif %}
+                    <a class="accordion__control" href="{{ post.url | relative_url }}" aria-label="Open episode page">↗</a>
+                  </div>
+                  <nav class="accordion__platforms" aria-label="Listen on">
+                    {% for platform in site.data.platforms %}
+                    {% unless platform.id == "rss" %}
+                    <a class="accordion__platform" href="{{ platform.url }}" aria-label="{{ platform.label }}" target="_blank" rel="noopener noreferrer">
+                      <img src="{{ platform.icon | relative_url }}" alt="" width="22" height="22">
+                    </a>
+                    {% endunless %}
+                    {% endfor %}
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </details>
+
         {% endif %}
-
-        {% if currentMonth != month %}
-        <h3 class="home-episodes__month" id="{{ currentMonth }}">{{ currentMonth }}</h3>
-        {% assign month = currentMonth %}
-        {% endif %}
-
-        <p class="home-episodes__item">
-          <a class="home-episodes__link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
-        </p>
-
-      {% endif %}
-    {% endfor %}
-    <a class="btn-cta home-episodes__archive" href="{{ '/archive/' | relative_url }}">[Archiv]</a>
+      {% endfor %}
+    </div>
+    <a class="btn-cta home-accordion__cta" href="{{ '/archive/' | relative_url }}">{view_more_episodes}</a>
   </section>
+
+  <script src="{{ '/assets/js/accordion.js' | relative_url }}" defer></script>
 
 </div>
 

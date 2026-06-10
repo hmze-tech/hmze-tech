@@ -548,7 +548,194 @@
 
 
 /* ------------------------------------------------------------------
-   Episode list — grouped by year / month
+   Episode accordion (home page) — <details>/<summary> rows.
+   Collapsed: "S.01 EP.XX - Title" + "+" icon.
+   Expanded: "×" icon, horizontal rule, then cover art, description,
+   "Read more", play/external controls, and platform icons.
+   ------------------------------------------------------------------ */
+
+.home-accordion {
+  margin-top: var(--space-5);
+  padding-bottom: var(--space-8);
+}
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.accordion__item {
+  background: var(--color-surface-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.accordion__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-4) clamp(var(--space-4), 4vw, var(--space-7));
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  list-style: none;
+}
+
+.accordion__summary::-webkit-details-marker,
+.accordion__summary::marker {
+  display: none;
+  content: "";
+}
+
+.accordion__label {
+  min-width: 0;
+}
+
+/* "+" / "×" toggle icon — a plus sign rotated 45° becomes a cross */
+.accordion__icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.accordion__icon::before,
+.accordion__icon::after {
+  content: "";
+  position: absolute;
+  background: var(--color-text-primary);
+}
+
+.accordion__icon::before {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+.accordion__icon::after {
+  left: 50%;
+  top: 0;
+  height: 100%;
+  width: 2px;
+  transform: translateX(-50%);
+}
+
+.accordion__item[open] .accordion__icon {
+  transform: rotate(45deg);
+}
+
+/* Expanded panel */
+.accordion__panel {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  padding: var(--space-5) clamp(var(--space-4), 4vw, var(--space-7)) var(--space-6);
+  border-top: 1px solid var(--color-track-inactive);
+}
+
+@media (min-width: 768px) {
+  .accordion__panel {
+    grid-template-columns: 190px 1fr;
+  }
+}
+
+.accordion__cover img,
+.accordion__cover-placeholder {
+  width: 100%;
+  max-width: 190px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-artwork);
+  box-shadow: var(--shadow-artwork-sm);
+  display: block;
+}
+
+.accordion__cover-placeholder {
+  background: var(--color-track-inactive);
+}
+
+.accordion__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.accordion__desc {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+}
+
+.accordion__readmore {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  align-self: flex-start;
+}
+
+.accordion__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.accordion__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-md);
+  line-height: 1;
+  color: var(--color-text-secondary);
+}
+
+.accordion__control:hover {
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+.accordion__platforms {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.accordion__platform img {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+.accordion__platform:hover {
+  opacity: 0.75;
+}
+
+.home-accordion__cta {
+  display: flex;
+  margin: var(--space-7) auto 0;
+  width: fit-content;
+}
+
+
+/* ------------------------------------------------------------------
+   Episode list — grouped by year / month (used on /archive/)
    ------------------------------------------------------------------ */
 
 .home-episodes {
@@ -595,11 +782,6 @@
 
 .home-episodes__link:hover {
   text-decoration: underline;
-}
-
-.home-episodes__archive {
-  display: inline-flex;
-  margin-top: var(--space-7);
 }
 
 
