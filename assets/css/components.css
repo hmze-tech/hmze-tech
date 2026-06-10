@@ -33,6 +33,12 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
+  filter: grayscale(100%) opacity(60%);
+  transition: filter 0.15s ease;
+}
+
+.social-icons__link:hover img {
+  filter: grayscale(0%) opacity(100%);
 }
 
 
@@ -303,11 +309,10 @@
 
 
 /* ------------------------------------------------------------------
-   Hero — three-column lockup layout
-   Left/right: flanking copy. Center: bracket lockup (logo.svg +
-   CSS-drawn brackets) with an orange accent line above, and the
-   HMZE × IMPALA SEARCH wordmark below. A full-width intro paragraph
-   sits underneath the three-column row.
+   Hero — flanking copy + full-bleed lockup image
+   Left/right: flanking copy. Below: a full-bleed lockup section
+   (orange accent line via ::before + hero-lockup.svg). A full-width
+   intro paragraph sits underneath.
    ------------------------------------------------------------------ */
 
 .home-hero {
@@ -325,7 +330,7 @@
 
 @media (min-width: 1024px) {
   .home-hero__top {
-    grid-template-columns: 1fr minmax(320px, 460px) 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -340,66 +345,36 @@
   margin: 0 auto;
 }
 
-/* Center column: lockup + wordmark */
-.home-hero__center {
+/* Lockup section — orange accent line + SVG image.
+   Sized close to the asset's native dimensions (538x787) so the
+   bracket corners read as small accents rather than filling the
+   viewport; centered within the hero. */
+.hero-lockup {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-5);
-  padding-top: clamp(var(--space-5), 6vw, var(--space-8));
+  overflow: hidden;
+  width: min(100%, 420px);
+  margin: 0 auto;
+  aspect-ratio: 538 / 787;
 }
 
-/* Vertical orange accent line — runs from the nav progress bar
-   down into the bracket lockup. */
-.home-hero__center::before {
+/* Vertical orange accent line — runs from the very top of the
+   section (connecting to the nav progress bar above) down to the
+   vertical midpoint of the lockup image. */
+.hero-lockup::before {
   content: "";
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
   width: 2px;
-  height: clamp(var(--space-5), 6vw, var(--space-8));
+  height: 50%;
   background: var(--color-accent);
 }
 
-/* Bracket lockup — "[" and "]" drawn with CSS borders flanking
-   the beyond {vibe_coding} mark (logo.svg). */
-.home-hero__lockup {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-5);
-  padding: var(--space-6) var(--space-5);
-}
-
-.home-hero__lockup::before,
-.home-hero__lockup::after {
-  content: "";
+.hero-lockup__image {
   display: block;
-  flex-shrink: 0;
-  align-self: stretch;
-  width: var(--space-5);
-  border: 8px solid var(--color-text-primary);
-}
-
-.home-hero__lockup::before {
-  border-right: none;
-}
-
-.home-hero__lockup::after {
-  border-left: none;
-}
-
-.home-hero__logo {
-  width: clamp(140px, 14vw, 220px);
-  height: auto;
-}
-
-.home-hero__wordmark img {
-  width: clamp(220px, 24vw, 360px);
-  height: auto;
+  width: 100%;
+  height: 100%;
 }
 
 /* Full-width intro paragraph below the lockup */
