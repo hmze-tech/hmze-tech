@@ -1,0 +1,52 @@
+<header class="site-header" role="banner">
+  <div class="site-header__inner">
+
+    <a class="site-header__logo" href="{{ '/' | relative_url }}" aria-label="{{ site.title }} — Home">
+      <img src="{{ '/assets/img/logo.svg' | relative_url }}"
+           alt="{{ site.title }}"
+           width="165" height="69">
+    </a>
+
+    <!--
+      Nav: center column — social platform links in a pill.
+      Links are data-driven from _data/social.yml.
+      Mobile behavior: pill stays visible; wordmark collapses on narrow viewports.
+      No hamburger: the nav contains only 4 icon-sized links that comfortably
+      fit on any screen width — see components.css for responsive rules.
+    -->
+    <nav class="site-nav" aria-label="Listen on">
+
+      <!--
+        Progress indicator: decorative "now playing" scrubber.
+        Static at 35% — requires JS + audio player integration to be functional.
+        Hidden on mobile (< 768px) via components.css media query.
+      -->
+      <div class="site-nav__progress" aria-hidden="true">
+        <div class="site-nav__progress-caret"></div>
+        <div class="site-nav__progress-track">
+          <div class="site-nav__progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="site-nav__pill">
+        {% for platform in site.data.social %}
+        <a class="social-icons__link"
+           href="{{ platform.url }}"
+           aria-label="{{ platform.label }}"
+           target="_blank" rel="noopener noreferrer">
+          <img src="{{ platform.icon | relative_url }}" alt="" width="36" height="36">
+        </a>
+        {% endfor %}
+      </div>
+
+    </nav>
+
+    <!-- Wordmark: right column. SVG from Figma node 2:1901 (typography as outlines). -->
+    <div class="site-header__wordmark">
+      <img src="{{ '/assets/img/wordmark.svg' | relative_url }}"
+           alt="HMZE × Impala Search"
+           width="388" height="16">
+    </div>
+
+  </div>
+</header>

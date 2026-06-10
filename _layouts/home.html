@@ -1,0 +1,179 @@
+---
+layout: default
+---
+
+{% if page.url == "/" %}
+
+{% assign latest = site.posts | first %}
+
+<div class="page-home">
+
+  <!-- ═══════════════════════════════════════════════════════════
+       HERO — three-column lockup layout
+       Figma reference: redesign/Beyond Vibe Coding - Website.png
+       (Figma MCP unavailable this session — measured from the
+       provided static export, not a live node inspection).
+       Left/right copy is hardcoded (not post-specific). Center
+       column reuses logo.svg (bracket lockup via CSS borders +
+       orange accent line via ::before) and wordmark.svg below.
+       Platform links live only in the nav pill (_includes/nav.html).
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="home-hero">
+    <div class="home-hero__top">
+      <p class="home-hero__copy home-hero__copy--left">
+        Beyond Vibe Coding is a weekly podcast for senior engineering leaders
+        navigating the impact of AI on how software gets built.
+      </p>
+
+      <div class="home-hero__center">
+        <div class="home-hero__lockup">
+          <img class="home-hero__logo"
+               src="{{ '/assets/img/logo.svg' | relative_url }}"
+               alt="{{ site.title }}"
+               width="165" height="69">
+        </div>
+        <div class="home-hero__wordmark">
+          <img src="{{ '/assets/img/wordmark.svg' | relative_url }}"
+               alt="HMZE × Impala Search"
+               width="388" height="16">
+        </div>
+      </div>
+
+      <p class="home-hero__copy home-hero__copy--right">
+        Hosted by Sebastian Heide-Meyer zu Erpen and André Neubauer in
+        partnership with Impala Search, Germany's leading technology and
+        executive search agency.
+      </p>
+    </div>
+
+    <p class="home-hero__intro">
+      Each episode brings together the leaders shaping the next era of
+      engineering - from how teams are adopting AI, to what changes for
+      product and architecture, to what stays unchanged when the tools
+      shift underneath us.
+    </p>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       LATEST EPISODE — featured card
+       Cover image falls back to site.logo if cover_image not set.
+       Description truncated at 40 words; "Read more" links to post.
+       ═══════════════════════════════════════════════════════════ -->
+  {% if latest %}
+  <section class="home-latest">
+    <article class="episode-card episode-card--featured">
+
+      <div class="episode-card__media">
+        {% if latest.cover_image %}
+        <img class="episode-card__cover"
+             src="{{ latest.cover_image }}"
+             alt="{{ latest.title }}"
+             loading="eager">
+        {% elsif site.logo %}
+        <img class="episode-card__cover"
+             src="{{ site.logo | absolute_url }}"
+             alt="{{ site.title }}"
+             loading="eager">
+        {% endif %}
+      </div>
+
+      <div class="episode-card__body">
+        <h2 class="episode-card__title">
+          <a href="{{ latest.url | relative_url }}">{{ latest.title }}</a>
+        </h2>
+        <p class="episode-card__date">{{ latest.date | date: "%-d. %B %Y" }}</p>
+        {% if latest.episode_url %}
+        <audio class="episode-card__audio" controls preload="none">
+          <source src="{{ latest.episode_url }}" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+        {% endif %}
+        <p class="episode-card__desc">
+          {{ latest.content | strip_html | truncatewords: 40 }}
+        </p>
+        <a class="btn-cta" href="{{ latest.url | relative_url }}">Read more</a>
+      </div>
+
+    </article>
+  </section>
+  {% endif %}
+
+  <!-- ═══════════════════════════════════════════════════════════
+       EPISODE LIST — accordion, episodes 47+ (47+ filter preserved
+       from the previous implementation; older episodes live in
+       the archive only).
+       Latest episode is skipped (already shown above).
+       Figma reference: redesign/Beyond Vibe Coding - Website.png
+       (Figma MCP unavailable this session — measured from the
+       provided static export, not a live node inspection).
+
+       Label format "S.01 EP.XX - <title>": post front matter only
+       has a sequential `episode` number (no season field), so
+       season is hardcoded to "01" per the task instructions. The
+       "#0XX " prefix is stripped from post.title to get <title>.
+
+       <details>/<summary> provide native open/close semantics with
+       no JS required; assets/js/accordion.js progressively enhances
+       this to enforce "one row open at a time".
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="home-accordion">
+    <div class="accordion" data-accordion>
+      {% for post in site.posts %}
+        {% if post.url == latest.url %}{% continue %}{% endif %}
+        {% if post.episode >= 47 %}
+
+          {% assign title_parts = post.title | split: " " %}
+          {% assign episode_title = title_parts | slice: 1, 99 | join: " " %}
+
+          <details class="accordion__item">
+            <summary class="accordion__summary">
+              <span class="accordion__label">S.01 EP.{{ post.episode }} - {{ episode_title }}</span>
+              <span class="accordion__icon" aria-hidden="true"></span>
+            </summary>
+            <div class="accordion__panel">
+              <div class="accordion__cover">
+                {% if post.cover_image %}
+                <img src="{{ post.cover_image }}" alt="" loading="lazy">
+                {% else %}
+                <div class="accordion__cover-placeholder" aria-hidden="true"></div>
+                {% endif %}
+              </div>
+              <div class="accordion__content">
+                <p class="accordion__desc">{{ post.content | strip_html | truncatewords: 50 }}</p>
+                <a class="accordion__readmore" href="{{ post.url | relative_url }}">Read more</a>
+                <div class="accordion__meta">
+                  <div class="accordion__controls">
+                    {% if post.episode_url %}
+                    <a class="accordion__control" href="{{ post.episode_url }}" aria-label="Play episode" target="_blank" rel="noopener noreferrer">▶</a>
+                    {% endif %}
+                    <a class="accordion__control" href="{{ post.url | relative_url }}" aria-label="Open episode page">↗</a>
+                  </div>
+                  <nav class="accordion__platforms" aria-label="Listen on">
+                    {% for platform in site.data.platforms %}
+                    {% unless platform.id == "rss" %}
+                    <a class="accordion__platform" href="{{ platform.url }}" aria-label="{{ platform.label }}" target="_blank" rel="noopener noreferrer">
+                      <img src="{{ platform.icon | relative_url }}" alt="" width="22" height="22">
+                    </a>
+                    {% endunless %}
+                    {% endfor %}
+                  </nav>
+                </div>
+              </div>
+            </div>
+          </details>
+
+        {% endif %}
+      {% endfor %}
+    </div>
+    <a class="btn-cta home-accordion__cta" href="{{ '/archive/' | relative_url }}">{view_more_episodes}</a>
+  </section>
+
+  <script src="{{ '/assets/js/accordion.js' | relative_url }}" defer></script>
+
+</div>
+
+{% else %}
+
+{{ content }}
+
+{% endif %}

@@ -1,0 +1,177 @@
+/*
+ * Design tokens extracted from the Figma file:
+ * "Beyond Vibe Coding – Website" (ob5JoTCMVC7WFhJOUgVQDB)
+ * Page: Landing Page Design
+ * Frames inspected: "Landing Page - Final" (2:1897), "Episode Page - Final" (2:1677)
+ * Extracted: 2026-06-09
+ *
+ * The Figma file does NOT use Figma Variables / variable defs — all token values
+ * were derived directly from style properties found in the code output.
+ */
+
+:root {
+
+  /* ===================================================================
+   * COLORS — Palette
+   * =================================================================== */
+
+  /* Neutrals */
+  --color-white-warm:    #f9f9f6; /* slightly warm off-white; page background */
+  --color-gray-light:    #d9d9d9; /* inactive progress-bar track, dividers     */
+  --color-gray-mid:      #6c6c6c; /* muted text, secondary labels, CTA button  */
+  --color-black-warm:    #1d1d1b; /* primary body & heading text               */
+
+  /*
+   * NOTE – Orange accent:
+   * An orange/amber accent color is clearly visible in screenshots (the
+   * vertical separator line in the hero and the "×" glyph in the HMZE ×
+   * IMPALA SEARCH lockup). Confirmed by sampling the exported SVG paths
+   * from Figma nodes 2:1984 (footer lockup) and 2:1901 (wordmark).
+   */
+
+  --color-accent: #FF6100; /* orange — × glyph, footer vertical line */
+
+
+  /* ===================================================================
+   * COLORS — Semantic roles
+   * =================================================================== */
+
+  --color-bg-page:         var(--color-white-warm); /* document background          */
+  --color-surface-card:    var(--color-white-warm); /* episode card / footer bg     */
+  --color-text-primary:    var(--color-black-warm); /* headings, body copy          */
+  --color-text-secondary:  var(--color-gray-mid);   /* labels, meta, placeholders   */
+  --color-text-on-cta:     var(--color-white-warm); /* text inside filled CTA btn   */
+  --color-bg-cta:          var(--color-gray-mid);   /* filled CTA button background */
+  --color-track-inactive:  var(--color-gray-light); /* progress-bar unfilled track  */
+  --color-track-active:    var(--color-gray-mid);   /* progress-bar filled portion  */
+
+
+  /* ===================================================================
+   * TYPOGRAPHY — Font families
+   * =================================================================== */
+
+  --font-family-sans:  'Graphik', sans-serif;   /* headings + body copy */
+  --font-family-mono:  'Fira Code', monospace;  /* labels, episode codes */
+
+
+  /* ===================================================================
+   * TYPOGRAPHY — Weights
+   * =================================================================== */
+
+  --font-weight-light:   300; /* Graphik Light  */
+  --font-weight-regular: 400; /* Fira Code Regular */
+  --font-weight-medium:  500; /* Graphik Medium (used for "Read more" links) */
+
+
+  /* ===================================================================
+   * TYPOGRAPHY — Size scale
+   * (Only three distinct sizes appear in the design)
+   * =================================================================== */
+
+  --font-size-xs:  11px; /* wordmark label (HMZE × IMPALA SEARCH) */
+  --font-size-sm:  16px; /* body, labels, metadata, CTA text */
+  --font-size-md:  24px; /* section/accordion headings        */
+  --font-size-lg:  32px; /* episode title (hero + list)       */
+
+
+  /* ===================================================================
+   * TYPOGRAPHY — Line heights
+   * =================================================================== */
+
+  --line-height-normal: normal; /* headings (Graphik Light, lg/md)      */
+  --line-height-body:   24px;   /* body copy and label text (16px size) */
+
+
+  /* ===================================================================
+   * TYPOGRAPHY — Composite text styles
+   * (named by role for quick reference)
+   * =================================================================== */
+
+  /* --ts-episode-title:  font: var(--font-weight-light) var(--font-size-lg)/var(--line-height-normal) var(--font-family-sans)  */
+  /* --ts-section-head:   font: var(--font-weight-light) var(--font-size-md)/var(--line-height-normal) var(--font-family-sans)  */
+  /* --ts-body:           font: var(--font-weight-light) var(--font-size-sm)/var(--line-height-body)   var(--font-family-sans)  */
+  /* --ts-label:          font: var(--font-weight-regular) var(--font-size-sm)/var(--line-height-body) var(--font-family-mono)  */
+  /* --ts-link-read-more: font: var(--font-weight-medium)  var(--font-size-sm)/var(--line-height-body) var(--font-family-sans); text-decoration: underline */
+
+
+  /* ===================================================================
+   * SPACING
+   * (Observed from consistent padding/gap values across both frames)
+   * =================================================================== */
+
+  --space-1:   4px;  /* progress bar height, thin rule              */
+  --space-2:  10px;  /* CTA button vertical padding                 */
+  --space-3:  20px;  /* CTA button horizontal padding, nav padding  */
+  --space-4:  24px;  /* gap between episode list items              */
+  --space-5:  36px;  /* social icon size                            */
+  --space-6:  48px;  /* prev/next navigation icon size              */
+  --space-7:  70px;  /* left indent for content inside cards        */
+  --space-8:  80px;  /* nav pill horizontal padding, icon gap       */
+
+
+  /* ===================================================================
+   * BORDER RADIUS
+   * =================================================================== */
+
+  --radius-artwork:  30px;    /* episode cover / album art images    */
+  --radius-card:     60px;    /* episode list cards, footer panel    */
+  --radius-track:   100px;    /* progress bar pill                   */
+  --radius-pill:   1000px;    /* nav social-links pill (full-pill)   */
+
+
+  /* ===================================================================
+   * SHADOWS / ELEVATION
+   * (Four distinct shadow values appear in the design)
+   * =================================================================== */
+
+  /* Primary card elevation – episode list items, footer */
+  --shadow-card:        5px 0px 20px 5px rgba(0, 0, 0, 0.10);
+
+  /* Artwork thumbnail inside expanded episode card */
+  --shadow-artwork-sm:  0px 0px 15px 0px rgba(0, 0, 0, 0.10);
+
+  /* Hero artwork on the episode detail page */
+  --shadow-artwork-lg:  0px 0px 15px 5px rgba(0, 0, 0, 0.10);
+
+  /* Navigation pill (social links bar) */
+  --shadow-nav:         0px 0px 10px 0px rgba(0, 0, 0, 0.10);
+
+  /* CTA "read more" / "view more" filled button */
+  --shadow-cta:         0px 0px 7.5px 0px rgba(0, 0, 0, 0.20);
+
+
+  /* ===================================================================
+   * OPACITY SCALE
+   * (Used for de-emphasised episode counter bubbles in the carousel)
+   * =================================================================== */
+
+  --opacity-ghost:   0.20; /* far/inactive carousel indicator  */
+  --opacity-dim:     0.40; /* adjacent carousel indicator      */
+  --opacity-blur-bg: 0.50; /* blurred side album art in hero   */
+
+
+  /* ===================================================================
+   * Z-INDEX LAYERS
+   * Not explicitly defined in the Figma file as variables.
+   * Defined here for implementation use only.
+   * =================================================================== */
+
+  --z-base:    0;
+  --z-content: 10;
+  --z-nav:     100;
+  --z-overlay: 200;
+
+
+  /* ===================================================================
+   * BREAKPOINTS
+   * Not defined in the Figma file (desktop-only, 1920px canvas).
+   * Defined here for mobile-first responsive implementation.
+   * =================================================================== */
+
+  --bp-sm:  480px;  /* small phones                       */
+  --bp-md:  768px;  /* tablets / large phones landscape   */
+  --bp-lg: 1024px;  /* small laptops                      */
+  --bp-xl: 1280px;  /* desktop                            */
+  --bp-2xl:1720px;  /* max content width (from Figma)     */
+
+}

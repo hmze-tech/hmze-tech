@@ -309,7 +309,6 @@ PLATFORMS
 DEPENDENCIES
   github-pages
   jekyll-include-cache
-  jekyll-remote-theme
   webrick (~> 1.8)
 
 CHECKSUMS

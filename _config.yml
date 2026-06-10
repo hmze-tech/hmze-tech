@@ -8,8 +8,7 @@ logo: /assets/img/logo.jpeg
 feed_owner: Sebastian Heide-Meyer zu Erpen und André Neubauer
 feed_contact: podcast@hmze.tech
 
-remote_theme: devpg/minimal
 color-scheme: dark
+theme_color: "#f9f9f6"
 
-plugins:
-  - jekyll-remote-theme      
+plugins: []

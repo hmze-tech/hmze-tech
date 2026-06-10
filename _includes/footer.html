@@ -1,0 +1,37 @@
+<footer class="site-footer" role="contentinfo">
+
+  <div class="site-footer__card">
+
+    <!-- Left: internal page navigation with active-state detection -->
+    <nav class="site-footer__nav" aria-label="Footer navigation">
+      <a class="site-footer__nav-link{% if page.url == '/' %} is-active{% endif %}"
+         href="{{ '/' | relative_url }}">latest episodes</a>
+      <a class="site-footer__nav-link{% if page.url contains '/archive' %} is-active{% endif %}"
+         href="{{ '/archive/' | relative_url }}">episode archive</a>
+    </nav>
+
+    <!-- Center: brand lockup. SVG from Figma node 2:1984. -->
+    <div class="site-footer__lockup">
+      <img src="{{ '/assets/img/footer-lockup.svg' | relative_url }}"
+           alt="{{ site.title }} — Beyond Vibe Coding">
+    </div>
+
+    <!-- Right: social platform icons, data-driven from _data/social.yml -->
+    <div class="site-footer__social social-icons">
+      {% for platform in site.data.social %}
+      <a class="social-icons__link"
+         href="{{ platform.url }}"
+         aria-label="{{ platform.label }}"
+         target="_blank" rel="noopener noreferrer">
+        <img src="{{ platform.icon | relative_url }}" alt="" width="36" height="36">
+      </a>
+      {% endfor %}
+    </div>
+
+  </div>
+
+  <p class="site-footer__copyright">
+    &copy; {{ 'now' | date: "%Y" }} HMZE &times; Impala Search
+  </p>
+
+</footer>

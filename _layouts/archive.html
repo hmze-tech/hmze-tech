@@ -1,0 +1,45 @@
+---
+layout: default
+---
+
+<div class="archive-page">
+
+  <!-- ══════════════════════════════════════════════════
+       PAGE HEADER — title + episode count
+       ══════════════════════════════════════════════════ -->
+  <header class="archive-header">
+    <h1 class="archive-header__title">Archiv</h1>
+    <p class="archive-header__count">{{ site.posts | size }} Episoden</p>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════
+       EPISODE LIST — all episodes, grouped by year/month
+       No episode number filter (full back-catalogue).
+       Month variable reset on each new year to prevent
+       month headings from bleeding across year boundaries.
+       ══════════════════════════════════════════════════ -->
+  <section class="archive-episodes">
+    {% assign year = "" %}
+    {% assign month = "" %}
+    {% for post in site.posts %}
+      {% assign currentYear = post.date | date: "%Y" %}
+      {% assign currentMonth = post.date | date: "%B" %}
+
+      {% if currentYear != year %}
+      <h2 class="home-episodes__year" id="{{ currentYear }}">{{ currentYear }}</h2>
+      {% assign year = currentYear %}
+      {% assign month = "" %}
+      {% endif %}
+
+      {% if currentMonth != month %}
+      <h3 class="home-episodes__month" id="{{ currentYear }}-{{ currentMonth }}">{{ currentMonth }}</h3>
+      {% assign month = currentMonth %}
+      {% endif %}
+
+      <p class="home-episodes__item">
+        <a class="home-episodes__link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      </p>
+    {% endfor %}
+  </section>
+
+</div>

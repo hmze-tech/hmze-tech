@@ -1,0 +1,1119 @@
+/* =============================================================================
+   components.css — Reusable UI components
+   Sections: Nav pill, Footer card, Social icon list, CTA button, Episode card
+   ============================================================================= */
+
+
+/* ------------------------------------------------------------------
+   Social icon list (shared by nav and footer)
+   ------------------------------------------------------------------ */
+
+.social-icons {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);   /* 36px between icons — condensed for mobile */
+}
+
+.social-icons__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--space-5);    /* 36px */
+  height: var(--space-5);
+  flex-shrink: 0;
+  transition: opacity 0.15s ease;
+}
+
+.social-icons__link:hover {
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+.social-icons__link img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+/* ------------------------------------------------------------------
+   Site nav — header nav with social pill
+   ------------------------------------------------------------------ */
+
+.site-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+
+/*
+ * Progress indicator — decorative nav scrubber (Figma: thin 4px bar above the pill,
+ * with a partial fill showing ~35% progress and a small caret above).
+ * AMBIGUITY: This element has no defined interactive state in the Figma;
+ * it appears to be a "now playing" audio progress indicator. Implemented
+ * here as static/decorative. Requires JavaScript to become functional.
+ */
+.site-nav__progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: 6px;
+  pointer-events: none;
+}
+
+.site-nav__progress-caret {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 6px solid var(--color-track-active);
+}
+
+.site-nav__progress-track {
+  width: 280px;
+  height: var(--space-1);       /* 4px */
+  background: var(--color-track-inactive);
+  border-radius: var(--radius-track);
+  overflow: hidden;
+  position: relative;
+}
+
+.site-nav__progress-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 35%;                   /* static placeholder; JS will drive this */
+  background: var(--color-track-active);
+  border-radius: var(--radius-track);
+}
+
+/* The social pill */
+.site-nav__pill {
+  background: var(--color-surface-card);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-nav);
+  display: flex;
+  align-items: center;
+  gap: clamp(var(--space-3), 4.2vw, var(--space-8));  /* 20–80px responsive gap */
+  padding: var(--space-3) clamp(var(--space-3), 4.2vw, var(--space-8));
+}
+
+/* Responsive: hide progress bar on mobile to save space */
+@media (max-width: 767px) {
+  .site-nav__progress {
+    display: none;
+  }
+}
+
+@media (min-width: 1280px) {
+  .site-nav__progress-track {
+    width: 476px;   /* exact Figma width at desktop */
+  }
+}
+
+
+/* ------------------------------------------------------------------
+   Header logo
+   ------------------------------------------------------------------ */
+
+.site-header__logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.site-header__logo img {
+  height: 48px;   /* scaled down from Figma 69px for typical viewport */
+  width: auto;
+  object-fit: contain;
+}
+
+@media (min-width: 1280px) {
+  .site-header__logo img {
+    height: 69px;   /* Figma exact */
+  }
+}
+
+
+/* ------------------------------------------------------------------
+   Header right wordmark — SVG from Figma node 2:1901
+   ------------------------------------------------------------------ */
+
+.site-header__wordmark {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.site-header__wordmark img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Hide wordmark on very small screens to avoid crowding the nav */
+@media (max-width: 639px) {
+  .site-header__wordmark {
+    display: none;
+  }
+  .site-header__inner {
+    grid-template-columns: auto 1fr;
+  }
+}
+
+
+/* ------------------------------------------------------------------
+   Footer card
+   ------------------------------------------------------------------ */
+
+.site-footer__card {
+  width: 100%;
+  max-width: var(--bp-2xl);
+  background: var(--color-surface-card);
+  border-radius: var(--radius-card);   /* 60px */
+  box-shadow: var(--shadow-card);
+  padding: clamp(2rem, 5vw, 5rem) clamp(1.5rem, 5vw, 5rem);
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "lockup"
+    "nav"
+    "social";
+  gap: var(--space-5);
+  align-items: center;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .site-footer__card {
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-areas: "nav lockup social";
+    text-align: left;
+    min-height: 200px;
+  }
+}
+
+/* Footer left nav links */
+.site-footer__nav {
+  grid-area: nav;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);    /* 10px */
+  align-items: flex-start;
+}
+
+@media (max-width: 767px) {
+  .site-footer__nav {
+    align-items: center;
+  }
+}
+
+.site-footer__nav-link {
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);     /* 16px */
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+}
+
+.site-footer__nav-link:hover,
+.site-footer__nav-link.is-active {
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+/* Footer center lockup */
+.site-footer__lockup {
+  grid-area: lockup;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.site-footer__lockup img {
+  max-height: 160px;   /* lockup SVG is portrait (538×787); constrain height */
+  width: auto;
+  object-fit: contain;
+}
+
+/* Footer right social icons */
+.site-footer__social {
+  grid-area: social;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(var(--space-3), 3vw, var(--space-6));
+}
+
+@media (max-width: 767px) {
+  .site-footer__social {
+    justify-content: center;
+  }
+}
+
+/* Footer copyright line (below card) */
+.site-footer__copyright {
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+
+/* ------------------------------------------------------------------
+   CTA button (pill-shaped, filled)
+   Used for "Read more", "View more episodes", etc.
+   ------------------------------------------------------------------ */
+
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-cta);
+  color: var(--color-text-on-cta);
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  padding: var(--space-2) var(--space-3);   /* 10px 20px */
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-cta);
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.btn-cta:hover {
+  opacity: 0.85;
+  text-decoration: none;
+}
+
+
+/* =============================================================================
+   HOME PAGE
+   Sections: Hero, Latest episode card, Episode list
+   ============================================================================= */
+
+
+/* ------------------------------------------------------------------
+   Hero — three-column lockup layout
+   Left/right: flanking copy. Center: bracket lockup (logo.svg +
+   CSS-drawn brackets) with an orange accent line above, and the
+   HMZE × IMPALA SEARCH wordmark below. A full-width intro paragraph
+   sits underneath the three-column row.
+   ------------------------------------------------------------------ */
+
+.home-hero {
+  padding: clamp(var(--space-5), 5vw, var(--space-8)) 0;
+  text-align: center;
+}
+
+.home-hero__top {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: center;
+  gap: var(--space-8);
+}
+
+@media (min-width: 1024px) {
+  .home-hero__top {
+    grid-template-columns: 1fr minmax(320px, 460px) 1fr;
+  }
+}
+
+/* Flanking copy columns */
+.home-hero__copy {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+/* Center column: lockup + wordmark */
+.home-hero__center {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  padding-top: clamp(var(--space-5), 6vw, var(--space-8));
+}
+
+/* Vertical orange accent line — runs from the nav progress bar
+   down into the bracket lockup. */
+.home-hero__center::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: clamp(var(--space-5), 6vw, var(--space-8));
+  background: var(--color-accent);
+}
+
+/* Bracket lockup — "[" and "]" drawn with CSS borders flanking
+   the beyond {vibe_coding} mark (logo.svg). */
+.home-hero__lockup {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-5);
+  padding: var(--space-6) var(--space-5);
+}
+
+.home-hero__lockup::before,
+.home-hero__lockup::after {
+  content: "";
+  display: block;
+  flex-shrink: 0;
+  align-self: stretch;
+  width: var(--space-5);
+  border: 8px solid var(--color-text-primary);
+}
+
+.home-hero__lockup::before {
+  border-right: none;
+}
+
+.home-hero__lockup::after {
+  border-left: none;
+}
+
+.home-hero__logo {
+  width: clamp(140px, 14vw, 220px);
+  height: auto;
+}
+
+.home-hero__wordmark img {
+  width: clamp(220px, 24vw, 360px);
+  height: auto;
+}
+
+/* Full-width intro paragraph below the lockup */
+.home-hero__intro {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  margin: var(--space-8) auto 0;
+}
+
+/* Platform button — icon + label in a pill */
+.platform-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface-card);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-cta);
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  transition: opacity 0.15s ease;
+  white-space: nowrap;
+}
+
+.platform-btn:hover {
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+.platform-btn img {
+  display: block;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+
+/* ------------------------------------------------------------------
+   Latest episode — featured card
+   ------------------------------------------------------------------ */
+
+.home-latest {
+  margin-bottom: var(--space-8);
+}
+
+.episode-card {
+  background: var(--color-surface-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+/* Two-column at tablet+: cover | body */
+.episode-card--featured {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .episode-card--featured {
+    grid-template-columns: auto 1fr;
+  }
+}
+
+.episode-card__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(var(--space-4), 4vw, var(--space-7));
+  padding-bottom: 0;
+}
+
+@media (min-width: 768px) {
+  .episode-card__media {
+    padding-bottom: clamp(var(--space-4), 4vw, var(--space-7));
+  }
+}
+
+.episode-card__cover {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius-artwork);
+  box-shadow: var(--shadow-artwork-lg);
+  display: block;
+}
+
+@media (min-width: 768px) {
+  .episode-card__cover {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+.episode-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: clamp(var(--space-4), 4vw, var(--space-7));
+  align-self: center;
+}
+
+.episode-card__title {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+}
+
+.episode-card__title a {
+  color: inherit;
+  transition: opacity 0.15s ease;
+}
+
+.episode-card__title a:hover {
+  text-decoration: none;
+  opacity: 0.70;
+}
+
+.episode-card__date {
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-body);
+}
+
+.episode-card__audio {
+  width: 100%;
+}
+
+.episode-card__desc {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+}
+
+
+/* ------------------------------------------------------------------
+   Episode accordion (home page) — <details>/<summary> rows.
+   Collapsed: "S.01 EP.XX - Title" + "+" icon.
+   Expanded: "×" icon, horizontal rule, then cover art, description,
+   "Read more", play/external controls, and platform icons.
+   ------------------------------------------------------------------ */
+
+.home-accordion {
+  margin-top: var(--space-5);
+  padding-bottom: var(--space-8);
+}
+
+.accordion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.accordion__item {
+  background: var(--color-surface-card);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+}
+
+.accordion__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-4) clamp(var(--space-4), 4vw, var(--space-7));
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  list-style: none;
+}
+
+.accordion__summary::-webkit-details-marker,
+.accordion__summary::marker {
+  display: none;
+  content: "";
+}
+
+.accordion__label {
+  min-width: 0;
+}
+
+/* "+" / "×" toggle icon — a plus sign rotated 45° becomes a cross */
+.accordion__icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.accordion__icon::before,
+.accordion__icon::after {
+  content: "";
+  position: absolute;
+  background: var(--color-text-primary);
+}
+
+.accordion__icon::before {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+.accordion__icon::after {
+  left: 50%;
+  top: 0;
+  height: 100%;
+  width: 2px;
+  transform: translateX(-50%);
+}
+
+.accordion__item[open] .accordion__icon {
+  transform: rotate(45deg);
+}
+
+/* Expanded panel */
+.accordion__panel {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  padding: var(--space-5) clamp(var(--space-4), 4vw, var(--space-7)) var(--space-6);
+  border-top: 1px solid var(--color-track-inactive);
+}
+
+@media (min-width: 768px) {
+  .accordion__panel {
+    grid-template-columns: 190px 1fr;
+  }
+}
+
+.accordion__cover img,
+.accordion__cover-placeholder {
+  width: 100%;
+  max-width: 190px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: var(--radius-artwork);
+  box-shadow: var(--shadow-artwork-sm);
+  display: block;
+}
+
+.accordion__cover-placeholder {
+  background: var(--color-track-inactive);
+}
+
+.accordion__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.accordion__desc {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+}
+
+.accordion__readmore {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+  text-decoration: underline;
+  align-self: flex-start;
+}
+
+.accordion__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.accordion__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-md);
+  line-height: 1;
+  color: var(--color-text-secondary);
+}
+
+.accordion__control:hover {
+  opacity: 0.75;
+  text-decoration: none;
+}
+
+.accordion__platforms {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.accordion__platform img {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+.accordion__platform:hover {
+  opacity: 0.75;
+}
+
+.home-accordion__cta {
+  display: flex;
+  margin: var(--space-7) auto 0;
+  width: fit-content;
+}
+
+
+/* ------------------------------------------------------------------
+   Episode list — grouped by year / month (used on /archive/)
+   ------------------------------------------------------------------ */
+
+.home-episodes {
+  margin-top: var(--space-5);
+  padding-bottom: var(--space-8);
+}
+
+.home-episodes__year {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-3);
+}
+
+/* First year heading needs no extra top margin — section provides spacing */
+.home-episodes > h2:first-of-type {
+  margin-top: 0;
+}
+
+.home-episodes__month {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.home-episodes__item {
+  margin-bottom: var(--space-3);
+}
+
+.home-episodes__link {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+}
+
+.home-episodes__link:hover {
+  text-decoration: underline;
+}
+
+
+/* =============================================================================
+   EPISODE DETAIL PAGE
+   Sections: Hero, Player, Prose, Episode nav
+   ============================================================================= */
+
+
+/* ------------------------------------------------------------------
+   Page wrapper — narrower than site-main to aid readability
+   ------------------------------------------------------------------ */
+
+.post-page {
+  padding-top: var(--space-5);
+  padding-bottom: var(--space-8);
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+
+/* ------------------------------------------------------------------
+   Hero — cover art alongside episode metadata
+   Mobile: stacked; tablet+: side-by-side
+   ------------------------------------------------------------------ */
+
+.post-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);
+  margin-bottom: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .post-hero {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.post-hero__artwork {
+  flex-shrink: 0;
+}
+
+.post-hero__cover {
+  display: block;
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: var(--radius-artwork);
+  box-shadow: var(--shadow-artwork-lg);
+}
+
+@media (min-width: 768px) {
+  .post-hero__cover {
+    width: 220px;
+    height: 220px;
+  }
+}
+
+.post-hero__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;  /* allow flex child to shrink below content width */
+}
+
+.post-hero__title {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+}
+
+.post-hero__date {
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+}
+
+
+/* ------------------------------------------------------------------
+   Player — audio element + show-level platform links
+   ------------------------------------------------------------------ */
+
+.post-player {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.post-player__audio {
+  width: 100%;
+}
+
+.post-player__platforms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+
+/* ------------------------------------------------------------------
+   Prose — episode show notes
+   70ch max-width keeps line length comfortable at any viewport.
+   ------------------------------------------------------------------ */
+
+.post-prose {
+  max-width: 70ch;
+  margin-bottom: var(--space-8);
+}
+
+.post-prose p {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-3);
+}
+
+.post-prose h2 {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-3);
+}
+
+.post-prose h3 {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+
+.post-prose a {
+  color: var(--color-text-primary);
+  text-decoration: underline;
+}
+
+.post-prose a:hover {
+  opacity: 0.7;
+  text-decoration: none;
+}
+
+.post-prose ul,
+.post-prose ol {
+  padding-left: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.post-prose li {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-1);
+}
+
+
+/* ------------------------------------------------------------------
+   Episode nav — prev / next + back to home
+   Three-column grid: older | home | newer
+   Collapses to single column on small phones.
+   ------------------------------------------------------------------ */
+
+.post-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-areas: "older home newer";
+  align-items: center;
+  gap: var(--space-3);
+  border-top: 1px solid var(--color-track-inactive);
+  padding-top: var(--space-5);
+}
+
+@media (max-width: 639px) {
+  .post-nav {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "home"
+      "older"
+      "newer";
+    gap: var(--space-4);
+  }
+}
+
+.post-nav__older {
+  grid-area: older;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.post-nav__home {
+  grid-area: home;
+  display: flex;
+  justify-content: center;
+}
+
+.post-nav__newer {
+  grid-area: newer;
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 639px) {
+  .post-nav__older,
+  .post-nav__newer {
+    justify-content: flex-start;
+  }
+}
+
+.post-nav__link {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+  transition: color 0.15s ease;
+  max-width: 220px;
+}
+
+@media (max-width: 639px) {
+  .post-nav__link {
+    max-width: 100%;
+  }
+}
+
+.post-nav__link:hover {
+  color: var(--color-text-primary);
+  text-decoration: none;
+}
+
+.post-nav__arrow {
+  font-family: var(--font-family-mono);
+  font-size: var(--font-size-md);
+  flex-shrink: 0;
+  color: var(--color-text-secondary);
+}
+
+.post-nav__link:hover .post-nav__arrow {
+  color: var(--color-text-primary);
+}
+
+.post-nav__info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.post-nav__label {
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.post-nav__title {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: inherit;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+
+/* =============================================================================
+   ARCHIVE PAGE
+   Header + full episode list (reuses .home-episodes__* item classes)
+   ============================================================================= */
+
+
+/* ------------------------------------------------------------------
+   Page wrapper — matches post-page width for consistency
+   ------------------------------------------------------------------ */
+
+.archive-page {
+  padding-top: var(--space-5);
+  padding-bottom: var(--space-8);
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+
+/* ------------------------------------------------------------------
+   Archive header — title + episode count
+   ------------------------------------------------------------------ */
+
+.archive-header {
+  margin-bottom: var(--space-6);
+}
+
+.archive-header__title {
+  font-family: var(--font-family-sans);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-normal);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.archive-header__count {
+  font-family: var(--font-family-mono);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-body);
+  color: var(--color-text-secondary);
+}
+
+
+/* ------------------------------------------------------------------
+   Archive episode list
+   Item styles reuse .home-episodes__* classes — no duplication.
+   Only the section wrapper differs (no bottom padding needed here;
+   the page wrapper provides it).
+   ------------------------------------------------------------------ */
+
+.archive-episodes {
+  margin-top: 0;
+}
