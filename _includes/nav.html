@@ -16,18 +16,6 @@
     -->
     <nav class="site-nav" aria-label="Listen on">
 
-      <!--
-        Progress indicator: decorative "now playing" scrubber.
-        Static at 35% — requires JS + audio player integration to be functional.
-        Hidden on mobile (< 768px) via components.css media query.
-      -->
-      <div class="site-nav__progress" aria-hidden="true">
-        <div class="site-nav__progress-caret"></div>
-        <div class="site-nav__progress-track">
-          <div class="site-nav__progress-fill"></div>
-        </div>
-      </div>
-
       <div class="site-nav__pill">
         {% for platform in site.data.social %}
         <a class="social-icons__link"
