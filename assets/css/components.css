@@ -303,6 +303,26 @@
   margin: 0 auto;
 }
 
+@media (min-width: 1024px) {
+  .home-hero__copy--left,
+  .home-hero__copy--right {
+    /* Push the copy down so its top lines up with the top of the
+       brackets in hero-lockup.svg (a fixed ~310px from the page top
+       at this breakpoint, since the lockup is pinned to top:0 with a
+       constant 420px width). The header height changes with the
+       responsive logo/nav sizing, so this offset is tuned per
+       breakpoint to compensate. */
+    margin-top: clamp(106px, calc(224px - 9.22vw), 130px);
+  }
+}
+
+@media (min-width: 1280px) {
+  .home-hero__copy--left,
+  .home-hero__copy--right {
+    margin-top: clamp(90px, calc(138px - 2.5vw), 106px);
+  }
+}
+
 /* Lockup section — SVG image (brackets, lockup text, wordmark, and
    the orange accent-line gradient are all part of the asset).
    Sized close to the asset's native dimensions (538x787) so the
