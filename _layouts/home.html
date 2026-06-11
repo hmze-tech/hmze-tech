@@ -11,9 +11,8 @@ layout: default
   <!-- ═══════════════════════════════════════════════════════════
        HERO — flanking copy + full-bleed lockup image
        Left/right copy is hardcoded (not post-specific). The lockup
-       (bracket composition + HMZE × IMPALA SEARCH wordmark) is a
-       single SVG asset exported from Figma; the orange accent line
-       above it is drawn separately in CSS.
+       (bracket composition + HMZE × IMPALA SEARCH wordmark + orange
+       accent-line gradient) is a single SVG asset exported from Figma.
        Platform links live only in the nav pill (_includes/nav.html).
        ═══════════════════════════════════════════════════════════ -->
   <section class="home-hero">
@@ -23,18 +22,18 @@ layout: default
         navigating the impact of AI on how software gets built.
       </p>
 
+      <section class="hero-lockup">
+        <img src="{{ '/assets/img/hero-lockup.svg' | relative_url }}"
+             alt="Beyond Vibe Coding — HMZE × Impala Search"
+             class="hero-lockup__image">
+      </section>
+
       <p class="home-hero__copy home-hero__copy--right">
         Hosted by Sebastian Heide-Meyer zu Erpen and André Neubauer in
         partnership with Impala Search, Germany's leading technology and
         executive search agency.
       </p>
     </div>
-
-    <section class="hero-lockup">
-      <img src="{{ '/assets/img/hero-lockup.svg' | relative_url }}"
-           alt="Beyond Vibe Coding — HMZE × Impala Search"
-           class="hero-lockup__image">
-    </section>
 
     <p class="home-hero__intro">
       Each episode brings together the leaders shaping the next era of
