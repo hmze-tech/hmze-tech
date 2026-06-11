@@ -107,9 +107,12 @@ layout: default
        ═══════════════════════════════════════════════════════════ -->
   <section class="home-accordion">
     <div class="accordion" data-accordion>
+      {% assign accordion_count = 0 %}
       {% for post in site.posts %}
         {% if post.url == latest.url %}{% continue %}{% endif %}
         {% if post.episode >= 47 %}
+          {% if accordion_count >= 6 %}{% break %}{% endif %}
+          {% assign accordion_count = accordion_count | plus: 1 %}
 
           {% assign title_parts = post.title | split: " " %}
           {% assign episode_title = title_parts | slice: 1, 99 | join: " " %}
