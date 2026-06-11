@@ -254,11 +254,12 @@
 
 
 /* ------------------------------------------------------------------
-   Hero — flanking copy with the lockup as the centre column
-   The lockup (hero-lockup.svg) sits between the left and right copy
-   columns, top-aligned with them so its baked-in accent-line gradient
-   starts near the nav and the brackets read at the same height as the
-   flanking text. A full-width intro paragraph sits underneath.
+   Hero — flanking copy with the lockup overlaid behind the nav
+   On desktop the lockup (hero-lockup.svg) is taken out of normal flow
+   and pinned to the top of the page (behind the nav bar), so its
+   baked-in accent-line gradient starts at the very top of the page.
+   The flanking copy columns sit either side of it. A full-width intro
+   paragraph sits underneath.
    ------------------------------------------------------------------ */
 
 .home-hero {
@@ -279,6 +280,15 @@
     grid-template-columns: 1fr minmax(280px, 420px) 1fr;
     align-items: start;
     gap: var(--space-5);
+    min-height: 400px;
+  }
+
+  .home-hero__copy--left {
+    grid-column: 1;
+  }
+
+  .home-hero__copy--right {
+    grid-column: 3;
   }
 }
 
@@ -293,14 +303,51 @@
   margin: 0 auto;
 }
 
+@media (min-width: 1024px) {
+  .home-hero__copy--left,
+  .home-hero__copy--right {
+    /* Position a box whose top lines up with the top of the brackets
+       in hero-lockup.svg (a fixed ~310px from the page top at this
+       breakpoint, since the lockup is pinned to top:0 with a constant
+       420px width) and whose height matches the brackets' height
+       (~247.5px), then center the copy within it — so the copy's
+       vertical midpoint matches the brackets' midpoint. The header
+       height changes with the responsive logo/nav sizing, so the
+       top offset is tuned per breakpoint to compensate. */
+    margin-top: clamp(106px, calc(224px - 9.22vw), 130px);
+    height: 247.5px;
+    display: grid;
+    align-content: center;
+  }
+}
+
+@media (min-width: 1280px) {
+  .home-hero__copy--left,
+  .home-hero__copy--right {
+    margin-top: clamp(90px, calc(138px - 2.5vw), 106px);
+  }
+}
+
 /* Lockup section — SVG image (brackets, lockup text, wordmark, and
    the orange accent-line gradient are all part of the asset).
    Sized close to the asset's native dimensions (538x787) so the
    bracket corners read as small accents rather than filling the
-   viewport; centered within its grid column. */
+   viewport. On mobile it sits in normal flow, centered within its
+   grid column; on desktop it's pinned to the top of the page (behind
+   the nav bar) so the gradient line starts at the very top. */
 .hero-lockup {
   width: min(100%, 420px);
   aspect-ratio: 538 / 787;
+}
+
+@media (min-width: 1024px) {
+  .hero-lockup {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 0;
+  }
 }
 
 .hero-lockup__image {

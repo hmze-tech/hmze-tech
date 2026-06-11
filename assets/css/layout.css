@@ -7,6 +7,7 @@
    ------------------------------------------------------------------ */
 
 .site-wrapper {
+  position: relative;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -32,6 +33,8 @@
    ------------------------------------------------------------------ */
 
 .site-header {
+  position: relative;
+  z-index: 1;
   width: 100%;
   padding: var(--space-3) var(--space-3);
   /* Approx 40px top padding based on logo y:61 from Figma */
