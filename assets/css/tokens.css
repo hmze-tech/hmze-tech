@@ -42,8 +42,7 @@
   --color-text-secondary:  var(--color-gray-mid);   /* labels, meta, placeholders   */
   --color-text-on-cta:     var(--color-white-warm); /* text inside filled CTA btn   */
   --color-bg-cta:          var(--color-gray-mid);   /* filled CTA button background */
-  --color-track-inactive:  var(--color-gray-light); /* progress-bar unfilled track  */
-  --color-track-active:    var(--color-gray-mid);   /* progress-bar filled portion  */
+  --color-track-inactive:  var(--color-gray-light); /* divider lines, track fills   */
 
 
   /* ===================================================================
@@ -115,7 +114,6 @@
 
   --radius-artwork:  30px;    /* episode cover / album art images    */
   --radius-card:     60px;    /* episode list cards, footer panel    */
-  --radius-track:   100px;    /* progress bar pill                   */
   --radius-pill:   1000px;    /* nav social-links pill (full-pill)   */
 
 
