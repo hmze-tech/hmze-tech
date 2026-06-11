@@ -254,10 +254,11 @@
 
 
 /* ------------------------------------------------------------------
-   Hero — flanking copy + full-bleed lockup image
-   Left/right: flanking copy. Below: a full-bleed lockup section
-   (orange accent line via ::before + hero-lockup.svg). A full-width
-   intro paragraph sits underneath.
+   Hero — flanking copy with the lockup as the centre column
+   The lockup (hero-lockup.svg) sits between the left and right copy
+   columns, top-aligned with them so its baked-in accent-line gradient
+   starts near the nav and the brackets read at the same height as the
+   flanking text. A full-width intro paragraph sits underneath.
    ------------------------------------------------------------------ */
 
 .home-hero {
@@ -275,7 +276,9 @@
 
 @media (min-width: 1024px) {
   .home-hero__top {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr minmax(280px, 420px) 1fr;
+    align-items: start;
+    gap: var(--space-5);
   }
 }
 
@@ -290,30 +293,14 @@
   margin: 0 auto;
 }
 
-/* Lockup section — orange accent line + SVG image.
+/* Lockup section — SVG image (brackets, lockup text, wordmark, and
+   the orange accent-line gradient are all part of the asset).
    Sized close to the asset's native dimensions (538x787) so the
    bracket corners read as small accents rather than filling the
-   viewport; centered within the hero. */
+   viewport; centered within its grid column. */
 .hero-lockup {
-  position: relative;
-  overflow: hidden;
   width: min(100%, 420px);
-  margin: 0 auto;
   aspect-ratio: 538 / 787;
-}
-
-/* Vertical orange accent line — runs from the very top of the
-   section (connecting to the nav progress bar above) down to the
-   vertical midpoint of the lockup image. */
-.hero-lockup::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 2px;
-  height: 50%;
-  background: var(--color-accent);
 }
 
 .hero-lockup__image {
