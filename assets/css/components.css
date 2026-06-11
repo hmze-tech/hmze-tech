@@ -124,10 +124,11 @@
   background: var(--color-surface-card);
   border-radius: var(--radius-card);   /* 60px */
   box-shadow: var(--shadow-card);
-  padding: clamp(2rem, 5vw, 5rem) clamp(1.5rem, 5vw, 5rem);
+  --footer-pad-block: clamp(1.5rem, 3vw, 2.5rem);
+  padding: var(--footer-pad-block) clamp(1.5rem, 5vw, 5rem);
 
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
     "lockup"
     "nav"
@@ -143,6 +144,13 @@
     grid-template-areas: "nav lockup social";
     text-align: left;
     min-height: 200px;
+  }
+
+  /* Pull the lockup up so the accent line sits flush with the card's
+     top edge, ignoring the card's vertical padding. */
+  .site-footer__lockup {
+    align-self: start;
+    margin-top: calc(-1 * var(--footer-pad-block));
   }
 }
 
@@ -183,12 +191,17 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
+  min-width: 0;
 }
 
 .site-footer__lockup img {
-  max-height: 160px;   /* lockup SVG is portrait (538×787); constrain height */
-  width: auto;
-  object-fit: contain;
+  width: min(100%, 400px);
+  /* SVG is portrait (538×787) with a long accent line above the bracket
+     lockup; crop to the bracket/wordmark portion plus a short stub of the
+     line so the lockup sits at the top of the footer. */
+  aspect-ratio: 538 / 550;
+  object-fit: cover;
+  object-position: center bottom;
 }
 
 /* Footer right social icons */
