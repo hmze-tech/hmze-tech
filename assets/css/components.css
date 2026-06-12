@@ -18,8 +18,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--space-5);    /* 36px */
-  height: var(--space-5);
+  /* 48px hit area for the 44px WCAG touch-target minimum; negative
+     margin keeps the 36px layout footprint so the nav pill and footer
+     row don't grow. Icon itself stays 36px (set on the img below). */
+  width: var(--space-6);
+  height: var(--space-6);
+  margin: calc((var(--space-5) - var(--space-6)) / 2);
   flex-shrink: 0;
   transition: opacity 0.15s ease;
 }
@@ -30,8 +34,8 @@
 }
 
 .social-icons__link img {
-  width: 100%;
-  height: 100%;
+  width: var(--space-5);    /* 36px visual size, independent of hit area */
+  height: var(--space-5);
   object-fit: contain;
   filter: grayscale(100%) opacity(60%);
   transition: filter 0.15s ease;
@@ -159,7 +163,9 @@
   grid-area: nav;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);    /* 10px */
+  /* Links carry 10px block padding for the 44px touch target, which
+     supplies the visual rhythm — no extra gap needed. */
+  gap: 0;
   align-items: flex-start;
 }
 
@@ -175,6 +181,8 @@
   font-size: var(--font-size-sm);     /* 16px */
   line-height: var(--line-height-body);
   color: var(--color-text-secondary);
+  /* 24px line-height + 2×10px padding = 44px touch target */
+  padding-block: var(--space-2);
 }
 
 .site-footer__nav-link:hover,
@@ -356,6 +364,9 @@
      portion plus a short stub of the line — same treatment as the
      footer lockup. */
   aspect-ratio: 538 / 550;
+  /* Mobile stack order per the Figma mobile frame: lockup first,
+     then the copy paragraphs. */
+  order: -1;
 }
 
 @media (min-width: 1024px) {
@@ -366,6 +377,7 @@
     transform: translateX(-50%);
     z-index: 0;
     aspect-ratio: 538 / 787;   /* full asset incl. accent line */
+    order: 0;
   }
 }
 
@@ -460,8 +472,12 @@
 }
 
 .episode-card__cover {
-  width: 200px;
-  height: 200px;
+  /* Mobile: artwork is the card's hero visual — span the card's inner
+     width (Figma mobile shows it near full-bleed), capped at the
+     tablet+ fixed size. */
+  width: min(100%, 280px);
+  height: auto;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: var(--radius-artwork);
   box-shadow: var(--shadow-artwork-lg);
@@ -486,9 +502,17 @@
 .episode-card__title {
   font-family: var(--font-family-sans);
   font-weight: var(--font-weight-light);
-  font-size: var(--font-size-lg);
+  /* Mobile: one step down the type scale — 32px wraps the long episode
+     titles to 5+ lines on a 390px viewport. */
+  font-size: var(--font-size-md);
   line-height: var(--line-height-normal);
   color: var(--color-text-primary);
+}
+
+@media (min-width: 768px) {
+  .episode-card__title {
+    font-size: var(--font-size-lg);
+  }
 }
 
 .episode-card__title a {
@@ -661,6 +685,10 @@
   color: var(--color-text-primary);
   text-decoration: underline;
   align-self: flex-start;
+  /* 24px line-height + 2×10px padding = 44px touch target; negative
+     margin keeps the surrounding flex-column rhythm unchanged. */
+  padding-block: var(--space-2);
+  margin-block: calc(-1 * var(--space-2));
 }
 
 .accordion__meta {
@@ -675,10 +703,19 @@
 .accordion__controls {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   font-size: var(--font-size-md);
   line-height: 1;
   color: var(--color-text-secondary);
+}
+
+.accordion__control {
+  /* 44px is the WCAG touch-target minimum, not a design token */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .accordion__control:hover {
@@ -689,7 +726,16 @@
 .accordion__platforms {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
+}
+
+.accordion__platform {
+  /* 44px is the WCAG touch-target minimum, not a design token */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .accordion__platform img {
@@ -836,14 +882,33 @@
   flex-direction: column;
   gap: var(--space-2);
   min-width: 0;  /* allow flex child to shrink below content width */
+  /* Mobile: meta is stacked under the centered artwork — center it too
+     (Figma mobile shows the title centered). */
+  text-align: center;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .post-hero__meta {
+    text-align: left;
+    align-items: flex-start;
+  }
 }
 
 .post-hero__title {
   font-family: var(--font-family-sans);
   font-weight: var(--font-weight-light);
-  font-size: var(--font-size-lg);
+  /* Mobile: one step down the type scale — 32px wraps the long episode
+     titles to 6 lines on a 390px viewport. */
+  font-size: var(--font-size-md);
   line-height: var(--line-height-normal);
   color: var(--color-text-primary);
+}
+
+@media (min-width: 768px) {
+  .post-hero__title {
+    font-size: var(--font-size-lg);
+  }
 }
 
 .post-hero__date {
@@ -874,6 +939,15 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
+  /* Mobile: buttons wrap under the centered hero — center the row
+     (Figma mobile shows the platform links centered). */
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .post-player__platforms {
+    justify-content: flex-start;
+  }
 }
 
 
