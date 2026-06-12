@@ -350,7 +350,12 @@
    the nav bar) so the gradient line starts at the very top. */
 .hero-lockup {
   width: min(100%, 420px);
-  aspect-ratio: 538 / 787;
+  /* The SVG is portrait (538×787); the top half is the long accent-line
+     gradient meant to run down from the page top on desktop. On mobile
+     the lockup sits in normal flow, so crop to the bracket/wordmark
+     portion plus a short stub of the line — same treatment as the
+     footer lockup. */
+  aspect-ratio: 538 / 550;
 }
 
 @media (min-width: 1024px) {
@@ -360,6 +365,7 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 0;
+    aspect-ratio: 538 / 787;   /* full asset incl. accent line */
   }
 }
 
@@ -367,6 +373,8 @@
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
 }
 
 /* Full-width intro paragraph below the lockup */
@@ -778,7 +786,7 @@
 .post-hero {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--space-5);
   margin-bottom: var(--space-6);
 }
@@ -792,12 +800,25 @@
 
 .post-hero__artwork {
   flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .post-hero__artwork {
+    width: auto;
+  }
 }
 
 .post-hero__cover {
   display: block;
-  width: 180px;
-  height: 180px;
+  /* Mobile: the artwork is the page's hero visual — span the content
+     column (Figma mobile shows it near full-bleed); cap at the same
+     420px the hero lockup uses. */
+  width: min(100%, 420px);
+  height: auto;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: var(--radius-artwork);
   box-shadow: var(--shadow-artwork-lg);
