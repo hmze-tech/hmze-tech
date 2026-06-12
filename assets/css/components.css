@@ -284,7 +284,9 @@
   grid-template-columns: 1fr;
   align-items: center;
   justify-items: center;
-  gap: var(--space-8);
+  /* Mobile: paragraphs sit close under the lockup (Figma mobile frame);
+     desktop spacing comes from the pinned-lockup layout below. */
+  gap: var(--space-4);
 }
 
 @media (min-width: 1024px) {
@@ -388,15 +390,27 @@
   line-height: var(--line-height-body);
   color: var(--color-text-secondary);
   max-width: 600px;
-  margin: var(--space-8) auto 0;
+  margin: var(--space-4) auto 0;
 }
 
-/* Platform button — icon + label in a pill */
+@media (min-width: 1024px) {
+  .home-hero__intro {
+    margin-top: var(--space-8);
+  }
+}
+
+/* Platform button — icon + label in a pill.
+   Mobile: icon-only round buttons in a single horizontal row (Figma
+   mobile shows an icon row without labels); each link keeps its
+   aria-label and a 44px touch box. Labels return at tablet+. */
 .platform-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-2);
+  min-width: 44px;
+  min-height: 44px;
   background: var(--color-surface-card);
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-cta);
@@ -406,6 +420,22 @@
   color: var(--color-text-primary);
   transition: opacity 0.15s ease;
   white-space: nowrap;
+}
+
+.platform-btn span {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .platform-btn {
+    padding: var(--space-2) var(--space-3);
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .platform-btn span {
+    display: inline;
+  }
 }
 
 .platform-btn:hover {
