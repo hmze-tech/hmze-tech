@@ -33,6 +33,8 @@
    ------------------------------------------------------------------ */
 
 .site-header {
+  /* Figma mobile frames have no header — pages open with the hero/episode label */
+  display: none;
   position: relative;
   z-index: 1;
   width: 100%;
@@ -40,6 +42,12 @@
   /* Approx 40px top padding based on logo y:61 from Figma */
   padding-top: clamp(1.25rem, 3.2vw, 2.5rem);
   padding-bottom: clamp(1rem, 2vw, 1.5rem);
+}
+
+@media (min-width: 640px) {
+  .site-header {
+    display: block;
+  }
 }
 
 .site-header__inner {

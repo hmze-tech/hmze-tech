@@ -18,8 +18,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--space-5);    /* 36px */
-  height: var(--space-5);
+  /* 48px hit area for the 44px WCAG touch-target minimum; negative
+     margin keeps the 36px layout footprint so the nav pill and footer
+     row don't grow. Icon itself stays 36px (set on the img below). */
+  width: var(--space-6);
+  height: var(--space-6);
+  margin: calc((var(--space-5) - var(--space-6)) / 2);
   flex-shrink: 0;
   transition: opacity 0.15s ease;
 }
@@ -30,8 +34,8 @@
 }
 
 .social-icons__link img {
-  width: 100%;
-  height: 100%;
+  width: var(--space-5);    /* 36px visual size, independent of hit area */
+  height: var(--space-5);
   object-fit: contain;
   filter: grayscale(100%) opacity(60%);
   transition: filter 0.15s ease;
@@ -103,15 +107,6 @@
   height: auto;
 }
 
-/* Hide wordmark on very small screens to avoid crowding the nav */
-@media (max-width: 639px) {
-  .site-header__wordmark {
-    display: none;
-  }
-  .site-header__inner {
-    grid-template-columns: auto 1fr;
-  }
-}
 
 
 /* ------------------------------------------------------------------
@@ -159,7 +154,9 @@
   grid-area: nav;
   display: flex;
   flex-direction: column;
-  gap: var(--space-2);    /* 10px */
+  /* Links carry 10px block padding for the 44px touch target, which
+     supplies the visual rhythm — no extra gap needed. */
+  gap: 0;
   align-items: flex-start;
 }
 
@@ -175,6 +172,8 @@
   font-size: var(--font-size-sm);     /* 16px */
   line-height: var(--line-height-body);
   color: var(--color-text-secondary);
+  /* 24px line-height + 2×10px padding = 44px touch target */
+  padding-block: var(--space-2);
 }
 
 .site-footer__nav-link:hover,
@@ -285,7 +284,9 @@
   grid-template-columns: 1fr;
   align-items: center;
   justify-items: center;
-  gap: var(--space-8);
+  /* Mobile: paragraphs sit close under the lockup (Figma mobile frame);
+     desktop spacing comes from the pinned-lockup layout below. */
+  gap: var(--space-4);
 }
 
 @media (min-width: 1024px) {
@@ -350,7 +351,15 @@
    the nav bar) so the gradient line starts at the very top. */
 .hero-lockup {
   width: min(100%, 420px);
-  aspect-ratio: 538 / 787;
+  /* The SVG is portrait (538×787); the top half is the long accent-line
+     gradient meant to run down from the page top on desktop. On mobile
+     the lockup sits in normal flow, so crop to the bracket/wordmark
+     portion plus a short stub of the line — same treatment as the
+     footer lockup. */
+  aspect-ratio: 538 / 550;
+  /* Mobile stack order per the Figma mobile frame: lockup first,
+     then the copy paragraphs. */
+  order: -1;
 }
 
 @media (min-width: 1024px) {
@@ -360,6 +369,8 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 0;
+    aspect-ratio: 538 / 787;   /* full asset incl. accent line */
+    order: 0;
   }
 }
 
@@ -367,6 +378,8 @@
   display: block;
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
 }
 
 /* Full-width intro paragraph below the lockup */
@@ -377,15 +390,27 @@
   line-height: var(--line-height-body);
   color: var(--color-text-secondary);
   max-width: 600px;
-  margin: var(--space-8) auto 0;
+  margin: var(--space-4) auto 0;
 }
 
-/* Platform button — icon + label in a pill */
+@media (min-width: 1024px) {
+  .home-hero__intro {
+    margin-top: var(--space-8);
+  }
+}
+
+/* Platform button — icon + label in a pill.
+   Mobile: icon-only round buttons in a single horizontal row (Figma
+   mobile shows an icon row without labels); each link keeps its
+   aria-label and a 44px touch box. Labels return at tablet+. */
 .platform-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-2);
+  min-width: 44px;
+  min-height: 44px;
   background: var(--color-surface-card);
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-cta);
@@ -395,6 +420,22 @@
   color: var(--color-text-primary);
   transition: opacity 0.15s ease;
   white-space: nowrap;
+}
+
+.platform-btn span {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .platform-btn {
+    padding: var(--space-2) var(--space-3);
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .platform-btn span {
+    display: inline;
+  }
 }
 
 .platform-btn:hover {
@@ -452,8 +493,12 @@
 }
 
 .episode-card__cover {
-  width: 200px;
-  height: 200px;
+  /* Mobile: artwork is the card's hero visual — span the card's inner
+     width (Figma mobile shows it near full-bleed), capped at the
+     tablet+ fixed size. */
+  width: min(100%, 280px);
+  height: auto;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: var(--radius-artwork);
   box-shadow: var(--shadow-artwork-lg);
@@ -478,9 +523,17 @@
 .episode-card__title {
   font-family: var(--font-family-sans);
   font-weight: var(--font-weight-light);
-  font-size: var(--font-size-lg);
+  /* Mobile: one step down the type scale — 32px wraps the long episode
+     titles to 5+ lines on a 390px viewport. */
+  font-size: var(--font-size-md);
   line-height: var(--line-height-normal);
   color: var(--color-text-primary);
+}
+
+@media (min-width: 768px) {
+  .episode-card__title {
+    font-size: var(--font-size-lg);
+  }
 }
 
 .episode-card__title a {
@@ -511,6 +564,15 @@
   font-size: var(--font-size-sm);
   line-height: var(--line-height-body);
   color: var(--color-text-primary);
+}
+
+/* Mobile: the CTA hugs its label and centers under the stacked card
+   (Figma mobile); on tablet+ it stretches with the body column, which
+   is the established desktop appearance. */
+@media (max-width: 767px) {
+  .episode-card--featured .btn-cta {
+    align-self: center;
+  }
 }
 
 
@@ -653,6 +715,10 @@
   color: var(--color-text-primary);
   text-decoration: underline;
   align-self: flex-start;
+  /* 24px line-height + 2×10px padding = 44px touch target; negative
+     margin keeps the surrounding flex-column rhythm unchanged. */
+  padding-block: var(--space-2);
+  margin-block: calc(-1 * var(--space-2));
 }
 
 .accordion__meta {
@@ -667,10 +733,19 @@
 .accordion__controls {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
   font-size: var(--font-size-md);
   line-height: 1;
   color: var(--color-text-secondary);
+}
+
+.accordion__control {
+  /* 44px is the WCAG touch-target minimum, not a design token */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .accordion__control:hover {
@@ -681,7 +756,16 @@
 .accordion__platforms {
   display: flex;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
+}
+
+.accordion__platform {
+  /* 44px is the WCAG touch-target minimum, not a design token */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
 }
 
 .accordion__platform img {
@@ -778,7 +862,7 @@
 .post-hero {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--space-5);
   margin-bottom: var(--space-6);
 }
@@ -792,12 +876,25 @@
 
 .post-hero__artwork {
   flex-shrink: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .post-hero__artwork {
+    width: auto;
+  }
 }
 
 .post-hero__cover {
   display: block;
-  width: 180px;
-  height: 180px;
+  /* Mobile: the artwork is the page's hero visual — span the content
+     column (Figma mobile shows it near full-bleed); cap at the same
+     420px the hero lockup uses. */
+  width: min(100%, 420px);
+  height: auto;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: var(--radius-artwork);
   box-shadow: var(--shadow-artwork-lg);
@@ -815,14 +912,33 @@
   flex-direction: column;
   gap: var(--space-2);
   min-width: 0;  /* allow flex child to shrink below content width */
+  /* Mobile: meta is stacked under the centered artwork — center it too
+     (Figma mobile shows the title centered). */
+  text-align: center;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .post-hero__meta {
+    text-align: left;
+    align-items: flex-start;
+  }
 }
 
 .post-hero__title {
   font-family: var(--font-family-sans);
   font-weight: var(--font-weight-light);
-  font-size: var(--font-size-lg);
+  /* Mobile: one step down the type scale — 32px wraps the long episode
+     titles to 6 lines on a 390px viewport. */
+  font-size: var(--font-size-md);
   line-height: var(--line-height-normal);
   color: var(--color-text-primary);
+}
+
+@media (min-width: 768px) {
+  .post-hero__title {
+    font-size: var(--font-size-lg);
+  }
 }
 
 .post-hero__date {
@@ -853,6 +969,15 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-2);
+  /* Mobile: buttons wrap under the centered hero — center the row
+     (Figma mobile shows the platform links centered). */
+  justify-content: center;
+}
+
+@media (min-width: 768px) {
+  .post-player__platforms {
+    justify-content: flex-start;
+  }
 }
 
 
@@ -1013,7 +1138,9 @@
 .post-nav__label {
   font-family: var(--font-family-mono);
   font-weight: var(--font-weight-regular);
-  font-size: var(--font-size-xs);
+  /* sm, not xs: 11px is below the 14px legibility floor for
+     functional text (xs is reserved for the wordmark graphic) */
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
 }
 

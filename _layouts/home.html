@@ -70,7 +70,7 @@ layout: default
         <h2 class="episode-card__title">
           <a href="{{ latest.url | relative_url }}">{{ latest.title }}</a>
         </h2>
-        <p class="episode-card__date">{{ latest.date | date: "%-d. %B %Y" }}</p>
+        <p class="episode-card__date">{{ latest.date | date: "%B %-d, %Y" }}</p>
         {% if latest.episode_url %}
         <audio class="episode-card__audio" controls preload="none">
           <source src="{{ latest.episode_url }}" type="audio/mpeg">
