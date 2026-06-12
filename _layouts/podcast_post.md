@@ -19,7 +19,7 @@ layout: default
     {% endif %}
     <div class="post-hero__meta">
       <h1 class="post-hero__title">{{ page.title }}</h1>
-      <p class="post-hero__date">{{ page.date | date: "%-d. %B %Y" }}</p>
+      <p class="post-hero__date">{{ page.date | date: "%B %-d, %Y" }}</p>
     </div>
   </section>
 
@@ -63,26 +63,26 @@ layout: default
          page.previous = chronologically OLDER post
          page.next     = chronologically NEWER post
        ══════════════════════════════════════════════════ -->
-  <nav class="post-nav" aria-label="Episoden Navigation">
+  <nav class="post-nav" aria-label="Episode navigation">
     <div class="post-nav__older">
       {% if page.previous %}
       <a class="post-nav__link" href="{{ page.previous.url | relative_url }}">
         <span class="post-nav__arrow" aria-hidden="true">←</span>
         <span class="post-nav__info">
-          <span class="post-nav__label">Ältere Folge</span>
+          <span class="post-nav__label">Older episode</span>
           <span class="post-nav__title">{{ page.previous.title }}</span>
         </span>
       </a>
       {% endif %}
     </div>
     <div class="post-nav__home">
-      <a class="btn-cta" href="{{ '/' | relative_url }}">Alle Folgen</a>
+      <a class="btn-cta" href="{{ '/' | relative_url }}">All episodes</a>
     </div>
     <div class="post-nav__newer">
       {% if page.next %}
       <a class="post-nav__link post-nav__link--right" href="{{ page.next.url | relative_url }}">
         <span class="post-nav__info">
-          <span class="post-nav__label">Neuere Folge</span>
+          <span class="post-nav__label">Newer episode</span>
           <span class="post-nav__title">{{ page.next.title }}</span>
         </span>
         <span class="post-nav__arrow" aria-hidden="true">→</span>

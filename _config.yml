@@ -1,11 +1,11 @@
 website_url: /
 title: HMZE
-description: Beyond Vibe Coding - der Podcast über die Zukunft der Softwareentwicklung
+description: Beyond Vibe Coding - the podcast about the future of software development
 feed_url: feed/
-feed_lang: de
+feed_lang: en
 feed_since: Fri, 05 Feb 2021 00:00 +0000
 logo: /assets/img/logo.jpeg
-feed_owner: Sebastian Heide-Meyer zu Erpen und André Neubauer
+feed_owner: Sebastian Heide-Meyer zu Erpen and André Neubauer
 feed_contact: podcast@hmze.tech
 
 color-scheme: dark
