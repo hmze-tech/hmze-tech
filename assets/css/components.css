@@ -545,6 +545,15 @@
   color: var(--color-text-primary);
 }
 
+/* Mobile: the CTA hugs its label and centers under the stacked card
+   (Figma mobile); on tablet+ it stretches with the body column, which
+   is the established desktop appearance. */
+@media (max-width: 767px) {
+  .episode-card--featured .btn-cta {
+    align-self: center;
+  }
+}
+
 
 /* ------------------------------------------------------------------
    Episode accordion (home page) — <details>/<summary> rows.
@@ -1108,7 +1117,9 @@
 .post-nav__label {
   font-family: var(--font-family-mono);
   font-weight: var(--font-weight-regular);
-  font-size: var(--font-size-xs);
+  /* sm, not xs: 11px is below the 14px legibility floor for
+     functional text (xs is reserved for the wordmark graphic) */
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
 }
 
