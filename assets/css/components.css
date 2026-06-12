@@ -107,15 +107,6 @@
   height: auto;
 }
 
-/* Hide wordmark on very small screens to avoid crowding the nav */
-@media (max-width: 639px) {
-  .site-header__wordmark {
-    display: none;
-  }
-  .site-header__inner {
-    grid-template-columns: auto 1fr;
-  }
-}
 
 
 /* ------------------------------------------------------------------
