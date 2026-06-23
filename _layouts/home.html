@@ -88,10 +88,12 @@ layout: default
   {% endif %}
 
   <!-- ═══════════════════════════════════════════════════════════
-       EPISODE LIST — accordion, episodes 47+ (47+ filter preserved
-       from the previous implementation; older episodes live in
-       the archive only).
-       Latest episode is skipped (already shown above).
+       EPISODE LIST — accordion showing the 6 most recent episodes.
+       The latest episode is skipped (already shown in the featured
+       card above); the full back-catalogue lives in the archive.
+       No episode-number filter: the 6-row cap already keeps the
+       list to recent episodes, and a restarted season means episode
+       numbers are no longer unique / monotonic.
        Figma reference: redesign/Beyond Vibe Coding - Website.png
        (Figma MCP unavailable this session — measured from the
        provided static export, not a live node inspection).
@@ -110,51 +112,49 @@ layout: default
       {% assign accordion_count = 0 %}
       {% for post in site.posts %}
         {% if post.url == latest.url %}{% continue %}{% endif %}
-        {% if post.episode >= 47 %}
-          {% if accordion_count >= 6 %}{% break %}{% endif %}
-          {% assign accordion_count = accordion_count | plus: 1 %}
+        {% if accordion_count >= 6 %}{% break %}{% endif %}
+        {% assign accordion_count = accordion_count | plus: 1 %}
 
-          {% assign title_parts = post.title | split: " " %}
-          {% assign episode_title = title_parts | slice: 1, 99 | join: " " %}
+        {% assign title_parts = post.title | split: " " %}
+        {% assign episode_title = title_parts | slice: 1, 99 | join: " " %}
 
-          <details class="accordion__item">
-            <summary class="accordion__summary">
-              <span class="accordion__label">S.01 EP.{{ post.episode }} - {{ episode_title }}</span>
-              <span class="accordion__icon" aria-hidden="true"></span>
-            </summary>
-            <div class="accordion__panel">
-              <div class="accordion__cover">
-                {% if post.cover_image %}
-                <img src="{{ post.cover_image }}" alt="" loading="lazy">
-                {% else %}
-                <div class="accordion__cover-placeholder" aria-hidden="true"></div>
-                {% endif %}
-              </div>
-              <div class="accordion__content">
-                <p class="accordion__desc">{{ post.content | strip_html | truncatewords: 50 }}</p>
-                <a class="accordion__readmore" href="{{ post.url | relative_url }}">Read more</a>
-                <div class="accordion__meta">
-                  <div class="accordion__controls">
-                    {% if post.episode_url %}
-                    <a class="accordion__control" href="{{ post.episode_url }}" aria-label="Play episode" target="_blank" rel="noopener noreferrer">▶</a>
-                    {% endif %}
-                    <a class="accordion__control" href="{{ post.url | relative_url }}" aria-label="Open episode page">↗</a>
-                  </div>
-                  <nav class="accordion__platforms" aria-label="Listen on">
-                    {% for platform in site.data.platforms %}
-                    {% unless platform.id == "rss" %}
-                    <a class="accordion__platform" href="{{ platform.url }}" aria-label="{{ platform.label }}" target="_blank" rel="noopener noreferrer">
-                      <img src="{{ platform.icon | relative_url }}" alt="" width="22" height="22">
-                    </a>
-                    {% endunless %}
-                    {% endfor %}
-                  </nav>
+        <details class="accordion__item">
+          <summary class="accordion__summary">
+            <span class="accordion__label">S.01 EP.{{ post.episode }} - {{ episode_title }}</span>
+            <span class="accordion__icon" aria-hidden="true"></span>
+          </summary>
+          <div class="accordion__panel">
+            <div class="accordion__cover">
+              {% if post.cover_image %}
+              <img src="{{ post.cover_image }}" alt="" loading="lazy">
+              {% else %}
+              <div class="accordion__cover-placeholder" aria-hidden="true"></div>
+              {% endif %}
+            </div>
+            <div class="accordion__content">
+              <p class="accordion__desc">{{ post.content | strip_html | truncatewords: 50 }}</p>
+              <a class="accordion__readmore" href="{{ post.url | relative_url }}">Read more</a>
+              <div class="accordion__meta">
+                <div class="accordion__controls">
+                  {% if post.episode_url %}
+                  <a class="accordion__control" href="{{ post.episode_url }}" aria-label="Play episode" target="_blank" rel="noopener noreferrer">▶</a>
+                  {% endif %}
+                  <a class="accordion__control" href="{{ post.url | relative_url }}" aria-label="Open episode page">↗</a>
                 </div>
+                <nav class="accordion__platforms" aria-label="Listen on">
+                  {% for platform in site.data.platforms %}
+                  {% unless platform.id == "rss" %}
+                  <a class="accordion__platform" href="{{ platform.url }}" aria-label="{{ platform.label }}" target="_blank" rel="noopener noreferrer">
+                    <img src="{{ platform.icon | relative_url }}" alt="" width="22" height="22">
+                  </a>
+                  {% endunless %}
+                  {% endfor %}
+                </nav>
               </div>
             </div>
-          </details>
+          </div>
+        </details>
 
-        {% endif %}
       {% endfor %}
     </div>
     <a class="btn-cta home-accordion__cta" href="{{ '/archive/' | relative_url }}">{view_more_episodes}</a>
