@@ -67,8 +67,22 @@ layout: default
       </div>
 
       <div class="episode-card__body">
+        {% assign latest_parts = latest.title | split: " " %}
+        {% assign latest_episode_title = latest_parts | slice: 1, 99 | join: " " %}
+        {% comment %} Derive season + episode from the "#S<season>.<ep>" / "#<NNN>" marker (matches accordion). {% endcomment %}
+        {% assign latest_marker = latest_parts | first | remove: "#" %}
+        {% if latest_marker contains "S" and latest_marker contains "." %}
+          {% assign latest_marker_bits = latest_marker | remove_first: "S" | split: "." %}
+          {% assign latest_season_label = latest_marker_bits[0] %}
+          {% assign latest_episode_label = latest_marker_bits[1] | times: 1 %}
+        {% else %}
+          {% assign latest_season_label = "1" %}
+          {% assign latest_episode_label = latest.episode %}
+        {% endif %}
+        {% if latest_season_label.size == 1 %}{% assign latest_season_label = latest_season_label | prepend: "0" %}{% endif %}
+        {% if latest_episode_label < 10 %}{% assign latest_episode_label = latest_episode_label | prepend: "0" %}{% endif %}
         <h2 class="episode-card__title">
-          <a href="{{ latest.url | relative_url }}">{{ latest.title }}</a>
+          <a href="{{ latest.url | relative_url }}">S.{{ latest_season_label }} EP.{{ latest_episode_label }} - {{ latest_episode_title }}</a>
         </h2>
         <p class="episode-card__date">{{ latest.date | date: "%B %-d, %Y" }}</p>
         {% if latest.episode_url %}
