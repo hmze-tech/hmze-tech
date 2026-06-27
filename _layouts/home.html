@@ -68,7 +68,7 @@ layout: default
 
       <div class="episode-card__body">
         <h2 class="episode-card__title">
-          <a href="{{ latest.url | relative_url }}">{{ latest.title }}</a>
+          <a href="{{ latest.url | relative_url }}">{% include episode-label.html post=latest %}</a>
         </h2>
         <p class="episode-card__date">{{ latest.date | date: "%B %-d, %Y" }}</p>
         {% if latest.episode_url %}
@@ -98,12 +98,9 @@ layout: default
        (Figma MCP unavailable this session — measured from the
        provided static export, not a live node inspection).
 
-       Label format "S.NN EP.XX - <title>": season + within-season
-       episode are derived from the title marker. Season 2+ feeds use
-       a "#S<season>.<ep>" marker (e.g. "#S2.03"); the legacy season 1
-       used a plain "#<NNN>" marker, so it falls back to season 1 and
-       the front-matter `episode` number. The marker is stripped from
-       post.title to get <title>.
+       Label format "S.NN EP.NN - <title>" is rendered by the shared
+       _includes/episode-label.html partial (also used by the featured
+       card above) so both stay in sync.
 
        <details>/<summary> provide native open/close semantics with
        no JS required; assets/js/accordion.js progressively enhances
@@ -117,25 +114,9 @@ layout: default
         {% if accordion_count >= 6 %}{% break %}{% endif %}
         {% assign accordion_count = accordion_count | plus: 1 %}
 
-        {% assign title_parts = post.title | split: " " %}
-        {% assign episode_title = title_parts | slice: 1, 99 | join: " " %}
-
-        {% comment %} Derive season + episode from the "#S<season>.<ep>" / "#<NNN>" marker. {% endcomment %}
-        {% assign marker = title_parts | first | remove: "#" %}
-        {% if marker contains "S" and marker contains "." %}
-          {% assign marker_bits = marker | remove_first: "S" | split: "." %}
-          {% assign season_label = marker_bits[0] %}
-          {% assign episode_label = marker_bits[1] | times: 1 %}
-        {% else %}
-          {% assign season_label = "1" %}
-          {% assign episode_label = post.episode %}
-        {% endif %}
-        {% if season_label.size == 1 %}{% assign season_label = season_label | prepend: "0" %}{% endif %}
-        {% if episode_label < 10 %}{% assign episode_label = episode_label | prepend: "0" %}{% endif %}
-
         <details class="accordion__item">
           <summary class="accordion__summary">
-            <span class="accordion__label">S.{{ season_label }} EP.{{ episode_label }} - {{ episode_title }}</span>
+            <span class="accordion__label">{% include episode-label.html post=post %}</span>
             <span class="accordion__icon" aria-hidden="true"></span>
           </summary>
           <div class="accordion__panel">
