@@ -63,7 +63,12 @@ function padEpisode(num) {
 function cleanTitle(rawTitle, paddedEpisode) {
   let title = rawTitle.trim();
 
-  title = title.replace(/^#\s*\d{1,4}\s*[:\-–—]?\s*/i, "");
+  // If the feed already provides its own "#" prefix (e.g. "#065 …" or
+  // "#S2.03 …"), trust the feed title verbatim instead of re-deriving one.
+  if (title.startsWith("#")) {
+    return title;
+  }
+
   title = title.replace(/^\d{1,4}\s*[:\-–—]\s*/i, "");
 
   return `#${paddedEpisode} ${title}`.trim();
