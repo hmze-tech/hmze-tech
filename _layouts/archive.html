@@ -37,7 +37,7 @@ layout: default
       {% endif %}
 
       <p class="home-episodes__item">
-        <a class="home-episodes__link" href="{{ post.url | relative_url }}">{{ post.title }}</a>
+        <a class="home-episodes__link" href="{{ post.url | relative_url }}">{% include episode-label.html post=post %}</a>
       </p>
     {% endfor %}
   </section>
