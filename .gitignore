@@ -4,3 +4,8 @@ redesign
 scripts/node_modules
 scripts/screenshots
 scripts/package*.json
+.claude/
+.devcontainer/
+.human/
+.humanconfig
+.humanconfig.yaml
