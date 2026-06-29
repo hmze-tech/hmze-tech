@@ -1,0 +1,24 @@
+{%- comment -%}
+  Renders an episode label as "S.NN EP.NN - <title>".
+
+  Season + within-season episode are derived from the title marker:
+  "#S<season>.<ep>" for season 2+, falling back to season 1 and the
+  front-matter `episode` number for the legacy "#<NNN>" form. Both
+  numbers are zero-padded to two digits.
+
+  Usage: {% include episode-label.html post=latest %}
+{%- endcomment -%}
+{%- assign _parts = include.post.title | split: " " -%}
+{%- assign _episode_title = _parts | slice: 1, 99 | join: " " -%}
+{%- assign _marker = _parts | first | remove: "#" -%}
+{%- if _marker contains "S" and _marker contains "." -%}
+  {%- assign _bits = _marker | remove_first: "S" | split: "." -%}
+  {%- assign _season = _bits[0] -%}
+  {%- assign _episode = _bits[1] | times: 1 -%}
+{%- else -%}
+  {%- assign _season = "1" -%}
+  {%- assign _episode = include.post.episode -%}
+{%- endif -%}
+{%- if _season.size == 1 -%}{%- assign _season = _season | prepend: "0" -%}{%- endif -%}
+{%- if _episode < 10 -%}{%- assign _episode = _episode | prepend: "0" -%}{%- endif -%}
+S.{{ _season }} EP.{{ _episode }} - {{ _episode_title }}

@@ -18,7 +18,7 @@ layout: default
     </div>
     {% endif %}
     <div class="post-hero__meta">
-      <h1 class="post-hero__title">{{ page.title }}</h1>
+      <h1 class="post-hero__title">{% include episode-label.html post=page %}</h1>
       <p class="post-hero__date">{{ page.date | date: "%B %-d, %Y" }}</p>
     </div>
   </section>
@@ -70,7 +70,7 @@ layout: default
         <span class="post-nav__arrow" aria-hidden="true">←</span>
         <span class="post-nav__info">
           <span class="post-nav__label">Older episode</span>
-          <span class="post-nav__title">{{ page.previous.title }}</span>
+          <span class="post-nav__title">{% include episode-label.html post=page.previous %}</span>
         </span>
       </a>
       {% endif %}
@@ -83,7 +83,7 @@ layout: default
       <a class="post-nav__link post-nav__link--right" href="{{ page.next.url | relative_url }}">
         <span class="post-nav__info">
           <span class="post-nav__label">Newer episode</span>
-          <span class="post-nav__title">{{ page.next.title }}</span>
+          <span class="post-nav__title">{% include episode-label.html post=page.next %}</span>
         </span>
         <span class="post-nav__arrow" aria-hidden="true">→</span>
       </a>

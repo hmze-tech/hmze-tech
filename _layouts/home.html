@@ -68,7 +68,7 @@ layout: default
 
       <div class="episode-card__body">
         <h2 class="episode-card__title">
-          <a href="{{ latest.url | relative_url }}">{{ latest.title }}</a>
+          <a href="{{ latest.url | relative_url }}">{% include episode-label.html post=latest %}</a>
         </h2>
         <p class="episode-card__date">{{ latest.date | date: "%B %-d, %Y" }}</p>
         {% if latest.episode_url %}
@@ -98,10 +98,9 @@ layout: default
        (Figma MCP unavailable this session — measured from the
        provided static export, not a live node inspection).
 
-       Label format "S.01 EP.XX - <title>": post front matter only
-       has a sequential `episode` number (no season field), so
-       season is hardcoded to "01" per the task instructions. The
-       "#0XX " prefix is stripped from post.title to get <title>.
+       Label format "S.NN EP.NN - <title>" is rendered by the shared
+       _includes/episode-label.html partial (also used by the featured
+       card above) so both stay in sync.
 
        <details>/<summary> provide native open/close semantics with
        no JS required; assets/js/accordion.js progressively enhances
@@ -115,12 +114,9 @@ layout: default
         {% if accordion_count >= 6 %}{% break %}{% endif %}
         {% assign accordion_count = accordion_count | plus: 1 %}
 
-        {% assign title_parts = post.title | split: " " %}
-        {% assign episode_title = title_parts | slice: 1, 99 | join: " " %}
-
         <details class="accordion__item">
           <summary class="accordion__summary">
-            <span class="accordion__label">S.01 EP.{{ post.episode }} - {{ episode_title }}</span>
+            <span class="accordion__label">{% include episode-label.html post=post %}</span>
             <span class="accordion__icon" aria-hidden="true"></span>
           </summary>
           <div class="accordion__panel">
