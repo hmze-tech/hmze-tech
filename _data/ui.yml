@@ -1,0 +1,7 @@
+# UI copy — centralized action-CTA strings (single source of truth).
+# Lowercase, on-brand. Referenced as {{ site.data.ui.<key> }}.
+# Only action links live here; platform-follow buttons, headings, and
+# proper nouns are intentionally excluded.
+read_more: read more
+all_episodes: all episodes
+view_more_episodes: view more episodes
