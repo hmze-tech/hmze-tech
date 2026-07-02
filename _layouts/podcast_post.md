@@ -76,7 +76,7 @@ layout: default
       {% endif %}
     </div>
     <div class="post-nav__home">
-      <a class="btn-cta" href="{{ '/' | relative_url }}">All episodes</a>
+      <a class="btn-cta" href="{{ '/' | relative_url }}">{{ site.data.ui.all_episodes }}</a>
     </div>
     <div class="post-nav__newer">
       {% if page.next %}

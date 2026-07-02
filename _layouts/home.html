@@ -80,7 +80,7 @@ layout: default
         <p class="episode-card__desc">
           {{ latest.content | strip_html | truncatewords: 40 }}
         </p>
-        <a class="btn-cta" href="{{ latest.url | relative_url }}">Read more</a>
+        <a class="btn-cta" href="{{ latest.url | relative_url }}">{{ site.data.ui.read_more }}</a>
       </div>
 
     </article>
@@ -129,7 +129,7 @@ layout: default
             </div>
             <div class="accordion__content">
               <p class="accordion__desc">{{ post.content | strip_html | truncatewords: 50 }}</p>
-              <a class="accordion__readmore" href="{{ post.url | relative_url }}">Read more</a>
+              <a class="accordion__readmore" href="{{ post.url | relative_url }}">{{ site.data.ui.read_more }}</a>
               <div class="accordion__meta">
                 <div class="accordion__controls">
                   {% if post.episode_url %}
@@ -153,7 +153,7 @@ layout: default
 
       {% endfor %}
     </div>
-    <a class="btn-cta home-accordion__cta" href="{{ '/archive/' | relative_url }}">{view_more_episodes}</a>
+    <a class="btn-cta home-accordion__cta" href="{{ '/archive/' | relative_url }}">{{ site.data.ui.view_more_episodes }}</a>
   </section>
 
   <script src="{{ '/assets/js/accordion.js' | relative_url }}" defer></script>
