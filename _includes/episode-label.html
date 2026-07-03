@@ -21,4 +21,4 @@
 {%- endif -%}
 {%- if _season.size == 1 -%}{%- assign _season = _season | prepend: "0" -%}{%- endif -%}
 {%- if _episode < 10 -%}{%- assign _episode = _episode | prepend: "0" -%}{%- endif -%}
-S.{{ _season }} EP.{{ _episode }} - {{ _episode_title }}
+S.{{ _season }} EP.{{ _episode }} - {{ _episode_title | escape }}

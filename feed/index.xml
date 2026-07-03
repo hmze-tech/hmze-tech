@@ -10,7 +10,7 @@ layout: podcast_feed
     <pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M %z" }}</pubDate>
     <link>{{ post.url | absolute_url }}</link>
     <guid isPermaLink="true">{{ post.url | absolute_url }}</guid>
-    <content:encoded><![CDATA[{{ post.content }}]]></content:encoded>
+    <content:encoded><![CDATA[{{ post.content | replace: "]]>", "]]&gt;" }}]]></content:encoded>
     <itunes:image href="{{ page.logo | absolute_url }}"/>
     <itunes:episode>{{ post.episode }}</itunes:episode>
     <itunes:episodeType>full</itunes:episodeType>
@@ -19,7 +19,7 @@ layout: podcast_feed
     <itunes:explicit>no</itunes:explicit>
     <itunes:keywords>{{ post.tags }}</itunes:keywords>
     <itunes:author>{{ site.feed_owner }}</itunes:author>
-    <enclosure url="{{ post.episode_url }}" type="audio/mpeg" length="{{ post.episode_filesize }}"/>
+    <enclosure url="{{ post.episode_url | escape }}" type="audio/mpeg" length="{{ post.episode_filesize }}"/>
     <itunes:duration>{{ post.episode_length }}</itunes:duration>
   </item>
 {% endfor %}

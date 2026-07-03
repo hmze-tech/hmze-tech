@@ -1,6 +1,7 @@
 _site
 .jekyll-metadata
 redesign
+node_modules
 scripts/node_modules
 scripts/screenshots
 scripts/package*.json

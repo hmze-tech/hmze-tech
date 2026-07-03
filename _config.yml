@@ -12,3 +12,10 @@ color-scheme: dark
 theme_color: "#f9f9f6"
 
 plugins: []
+
+# NOTE ON SSTI: every _posts entry is generated from the untrusted Riverside
+# RSS feed by scripts/sync-podcast.js. That script's cleanBody() neutralizes
+# Liquid delimiters ("{{"/"{%") in the feed body, which is the actual control
+# against build-time template injection. (Jekyll's `render_with_liquid: false`
+# would be the platform-level guard, but it is a Jekyll 4.0+ feature and a
+# no-op on the Jekyll 3.10 that GitHub Pages runs, so we do not rely on it.)

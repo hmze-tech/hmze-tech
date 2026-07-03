@@ -1,0 +1,13 @@
+{
+  "name": "hmze-tech-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Build-time tooling for the Beyond Vibe Coding (HMZE) podcast site.",
+  "scripts": {
+    "sync": "node scripts/sync-podcast.js"
+  },
+  "dependencies": {
+    "he": "1.2.0",
+    "xml2js": "0.6.2"
+  }
+}

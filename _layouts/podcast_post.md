@@ -12,8 +12,8 @@ layout: default
     {% if page.cover_image %}
     <div class="post-hero__artwork">
       <img class="post-hero__cover"
-           src="{{ page.cover_image }}"
-           alt="{{ page.title }}"
+           src="{{ page.cover_image | escape }}"
+           alt="{{ page.title | escape }}"
            loading="eager">
     </div>
     {% endif %}
@@ -31,7 +31,7 @@ layout: default
   {% if page.episode_url %}
   <section class="post-player">
     <audio class="post-player__audio" controls preload="none">
-      <source src="{{ page.episode_url }}" type="audio/mpeg">
+      <source src="{{ page.episode_url | escape }}" type="audio/mpeg">
       Your browser does not support the audio element.
     </audio>
     <nav class="post-player__platforms" aria-label="Listen on">

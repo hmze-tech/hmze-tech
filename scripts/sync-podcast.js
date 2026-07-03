@@ -42,17 +42,25 @@ function extractEpisodeNumber(item, rawTitle) {
   return Number.isFinite(num) ? num : null;
 }
 
+// The RSS feed is untrusted input. Only allow http(s) URLs so a hostile
+// feed cannot smuggle a `javascript:`/`data:` scheme into a rendered
+// `src`/`href` attribute (stored XSS). Anything else is dropped.
+function safeUrl(value) {
+  const url = String(value || "").trim();
+  return /^https?:\/\//i.test(url) ? url : "";
+}
+
 function extractAudioUrl(item) {
   const enclosure = item.enclosure;
-  if (enclosure?.$?.url) return enclosure.$.url;
-  if (enclosure?.url) return enclosure.url;
+  if (enclosure?.$?.url) return safeUrl(enclosure.$.url);
+  if (enclosure?.url) return safeUrl(enclosure.url);
   return "";
 }
 
 function extractCoverImage(item) {
   const img = item["itunes:image"];
-  if (img?.$?.href) return img.$.href;
-  if (typeof img === "string") return img;
+  if (img?.$?.href) return safeUrl(img.$.href);
+  if (typeof img === "string") return safeUrl(img);
   return "";
 }
 
@@ -74,16 +82,35 @@ function cleanTitle(rawTitle, paddedEpisode) {
   return `#${paddedEpisode} ${title}`.trim();
 }
 
+// Neutralise anything in the (already tag-stripped) feed body that could
+// re-activate as markup or template code downstream:
+//   - HTML metacharacters, so a double-encoded payload that survived the
+//     tag strip (e.g. "&amp;lt;img onerror=...&amp;gt;" -> "<img ...>")
+//     cannot be re-parsed as live HTML by Kramdown.
+//   - Liquid delimiters, so feed-supplied "{{ ... }}"/"{% ... %}" cannot
+//     execute as a build-time template (SSTI). `render_with_liquid: false`
+//     in _config.yml is the primary guard; this is defense-in-depth.
+function neutralize(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/{{/g, "{ {")
+    .replace(/{%/g, "{ %");
+}
+
 function cleanBody(htmlOrText) {
   const decoded = he.decode(text(htmlOrText));
 
-  return decoded
+  const stripped = decoded
     .replace(/<br\s*\/?>/gi, "\n")
     .replace(/<\/p>/gi, "\n\n")
     .replace(/<[^>]+>/g, "")
     .replace(/\r/g, "")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
+
+  return neutralize(stripped);
 }
 
 function buildPostContent({ title, episode, body, episodeUrl, coverImage }) {
@@ -187,7 +214,11 @@ async function main() {
   console.log(`Done. Created ${createdCount} new file(s).`);
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}
+
+module.exports = { safeUrl, neutralize, cleanBody, cleanTitle };

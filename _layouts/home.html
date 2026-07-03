@@ -55,8 +55,8 @@ layout: default
       <div class="episode-card__media">
         {% if latest.cover_image %}
         <img class="episode-card__cover"
-             src="{{ latest.cover_image }}"
-             alt="{{ latest.title }}"
+             src="{{ latest.cover_image | escape }}"
+             alt="{{ latest.title | escape }}"
              loading="eager">
         {% elsif site.logo %}
         <img class="episode-card__cover"
@@ -73,7 +73,7 @@ layout: default
         <p class="episode-card__date">{{ latest.date | date: "%B %-d, %Y" }}</p>
         {% if latest.episode_url %}
         <audio class="episode-card__audio" controls preload="none">
-          <source src="{{ latest.episode_url }}" type="audio/mpeg">
+          <source src="{{ latest.episode_url | escape }}" type="audio/mpeg">
           Your browser does not support the audio element.
         </audio>
         {% endif %}
@@ -122,7 +122,7 @@ layout: default
           <div class="accordion__panel">
             <div class="accordion__cover">
               {% if post.cover_image %}
-              <img src="{{ post.cover_image }}" alt="" loading="lazy">
+              <img src="{{ post.cover_image | escape }}" alt="" loading="lazy">
               {% else %}
               <div class="accordion__cover-placeholder" aria-hidden="true"></div>
               {% endif %}
@@ -133,7 +133,7 @@ layout: default
               <div class="accordion__meta">
                 <div class="accordion__controls">
                   {% if post.episode_url %}
-                  <a class="accordion__control" href="{{ post.episode_url }}" aria-label="Play episode" target="_blank" rel="noopener noreferrer">▶</a>
+                  <a class="accordion__control" href="{{ post.episode_url | escape }}" aria-label="Play episode" target="_blank" rel="noopener noreferrer">▶</a>
                   {% endif %}
                   <a class="accordion__control" href="{{ post.url | relative_url }}" aria-label="Open episode page">↗</a>
                 </div>
