@@ -21,3 +21,9 @@
   url: https://www.linkedin.com/company/73990683/
   icon: /assets/img/icons/linkedin.svg
   label: Follow on LinkedIn
+
+- id: rss
+  name: RSS
+  url: https://anchor.fm/s/10dff5920/podcast/rss
+  icon: /assets/img/icons/rss.svg
+  label: Subscribe via RSS
