@@ -138,12 +138,11 @@ layout: default
                   <a class="accordion__control" href="{{ post.url | relative_url }}" aria-label="Open episode page">↗</a>
                 </div>
                 <nav class="accordion__platforms" aria-label="Listen on">
-                  {% for platform in site.data.platforms %}
-                  {% unless platform.id == "rss" %}
+                  {% assign players = site.data.social | where: "player", true %}
+                  {% for platform in players %}
                   <a class="accordion__platform" href="{{ platform.url }}" aria-label="{{ platform.label }}" target="_blank" rel="noopener noreferrer">
                     <img src="{{ platform.icon | relative_url }}" alt="" width="22" height="22">
                   </a>
-                  {% endunless %}
                   {% endfor %}
                 </nav>
               </div>
