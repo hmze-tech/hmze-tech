@@ -13,7 +13,7 @@ layout: custom
       <img src="https://cdn.simpleicons.org/applepodcasts/872EC4" width="22" height="22" alt="">
       <span>Apple Podcasts</span>
     </a>
-    <a class="platform-btn" href="https://www.youtube.com/@HMZE-BeyondVibeCoding" target="_blank" rel="noopener noreferrer">
+    <a class="platform-btn" href="https://www.youtube.com/@BeyondVibeCodingPodcast" target="_blank" rel="noopener noreferrer">
       <img src="https://cdn.simpleicons.org/youtube/FF0000" width="22" height="22" alt="">
       <span>YouTube</span>
     </a>

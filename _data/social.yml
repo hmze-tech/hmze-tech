@@ -1,20 +1,33 @@
+# Single source of truth for all platform links across the site.
+#
+# Consumers:
+#   _includes/nav.html, _includes/footer.html  — every entry (header pill, footer icons)
+#   _layouts/home.html, _layouts/podcast_post.md — entries with `player: true`
+#
+# `player: true` marks the listening apps shown in the compact platform rows
+# next to an episode player. RSS and LinkedIn stay out of those rows; they
+# still appear in the header pill and footer.
+
 - id: spotify
   name: Spotify
   url: https://open.spotify.com/show/5wgcluRAVV7zEa9Zo4po5B
   icon: /assets/img/icons/spotify.svg
   label: Listen on Spotify
+  player: true
 
 - id: apple-podcasts
   name: Apple Podcasts
   url: https://podcasts.apple.com/de/podcast/hmze/id1869935041
   icon: /assets/img/icons/apple-podcasts.svg
   label: Listen on Apple Podcasts
+  player: true
 
 - id: youtube
   name: YouTube
-  url: https://www.youtube.com/@HMZE-BeyondVibeCoding
+  url: https://www.youtube.com/@BeyondVibeCodingPodcast
   icon: /assets/img/icons/youtube.svg
   label: Watch on YouTube
+  player: true
 
 - id: linkedin
   name: LinkedIn

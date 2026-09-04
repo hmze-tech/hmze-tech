@@ -9,3 +9,4 @@ scripts/package*.json
 .human/
 .humanconfig
 .humanconfig.yaml
+node_modules/

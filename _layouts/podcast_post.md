@@ -35,8 +35,8 @@ layout: default
       Your browser does not support the audio element.
     </audio>
     <nav class="post-player__platforms" aria-label="Listen on">
-      {% for platform in site.data.platforms %}
-      {% unless platform.id == "rss" %}
+      {% assign players = site.data.social | where: "player", true %}
+      {% for platform in players %}
       <a class="platform-btn"
          href="{{ platform.url }}"
          aria-label="{{ platform.label }}"
@@ -44,7 +44,6 @@ layout: default
         <img src="{{ platform.icon | relative_url }}" alt="" width="22" height="22">
         <span>{{ platform.name }}</span>
       </a>
-      {% endunless %}
       {% endfor %}
     </nav>
   </section>
