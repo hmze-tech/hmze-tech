@@ -1030,10 +1030,20 @@
   text-decoration: none;
 }
 
+/* Show notes are the one place lists carry meaning, so they opt back out of the
+   global list-style reset. */
 .post-prose ul,
 .post-prose ol {
   padding-left: var(--space-4);
   margin-bottom: var(--space-3);
+}
+
+.post-prose ul {
+  list-style: disc;
+}
+
+.post-prose ol {
+  list-style: decimal;
 }
 
 .post-prose li {
