@@ -74,16 +74,193 @@ function cleanTitle(rawTitle, paddedEpisode) {
   return `#${paddedEpisode} ${title}`.trim();
 }
 
-function cleanBody(htmlOrText) {
-  const decoded = he.decode(text(htmlOrText));
+// ---------------------------------------------------------------------------
+// HTML -> Markdown
+//
+// The feed ships show notes as HTML (paragraphs, lists, links, headings) and we
+// store them as Markdown, so every construct has to be translated rather than
+// dropped: deleting a tag without a replacement welds the text on either side
+// together, which is how list items used to end up as one run-on line.
+// ---------------------------------------------------------------------------
 
-  return decoded
-    .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<\/p>/gi, "\n\n")
-    .replace(/<[^>]+>/g, "")
-    .replace(/\r/g, "")
+// Tags that imply a break in the text when we have no better mapping for them.
+const BLOCK_TAGS = new Set([
+  "address", "article", "aside", "blockquote", "div", "dl", "dd", "dt",
+  "fieldset", "figcaption", "figure", "footer", "form", "header", "hr",
+  "main", "nav", "pre", "section", "table", "tbody", "td", "tfoot", "th",
+  "thead", "tr",
+]);
+
+// Converted links are parked behind a placeholder so that the later passes,
+// which strip anything shaped like a tag, cannot eat an <https://...> autolink.
+const LINK_MARK = "\u0000";
+
+function stripTags(html) {
+  return html.replace(/<[^>]+>/g, "");
+}
+
+// Kramdown only recognises <...> autolinks with a lower-case scheme, and the
+// feed does contain the occasional "Https://". Schemes are case-insensitive, so
+// this is safe to normalise.
+function normalizeScheme(href) {
+  return href.replace(/^([a-zA-Z][a-zA-Z0-9+.-]*):/, (_, scheme) => `${scheme.toLowerCase()}:`);
+}
+
+// The feed emits <a href="URL">URL</a> a lot; [https://x](https://x) is noise.
+function sameTarget(label, href) {
+  const bare = (value) => value.replace(/^https?:\/\//i, "").replace(/\/+$/, "");
+  return bare(label) === bare(href);
+}
+
+function markdownLink(label, href) {
+  if (!href) return label;
+  if (!label || sameTarget(label, href)) return `<${href}>`;
+  // Whitespace or parens in a bare destination break the inline-link syntax.
+  const target = /[()\s]/.test(href) ? `<${href}>` : href;
+  return `[${label}](${target})`;
+}
+
+function convertLinks(html, links) {
+  return html.replace(/<a\b([^>]*)>([\s\S]*?)<\/a\s*>/gi, (_, attrs, inner) => {
+    const hrefMatch = attrs.match(/\bhref\s*=\s*("([^"]*)"|'([^']*)'|([^\s>]+))/i);
+    const href = hrefMatch
+      ? normalizeScheme(he.decode(hrefMatch[2] ?? hrefMatch[3] ?? hrefMatch[4] ?? "").trim())
+      : "";
+    const label = he.decode(stripTags(inner)).replace(/\s+/g, " ").trim();
+
+    if (!href && !label) return "";
+    // Bare fragments, javascript: and friends are not worth linking.
+    if (href && !/^(https?:|mailto:)/i.test(href)) return label;
+
+    links.push(markdownLink(label, href));
+    return `${LINK_MARK}${links.length - 1}${LINK_MARK}`;
+  });
+}
+
+// Emphasis markers have to hug their text — "** bold **" is not emphasis — so
+// any padding is moved outside the delimiters.
+function wrapInline(inner, marker) {
+  const [, lead, core, tail] = stripTags(inner).match(/^(\s*)([\s\S]*?)(\s*)$/);
+  return core ? `${lead}${marker}${core}${marker}${tail}` : `${lead}${tail}`;
+}
+
+function convertInline(html, links) {
+  return convertLinks(html, links)
+    .replace(/<(strong|b)\b[^>]*>([\s\S]*?)<\/\1\s*>/gi, (_, __, inner) => wrapInline(inner, "**"))
+    .replace(/<(em|i)\b[^>]*>([\s\S]*?)<\/\1\s*>/gi, (_, __, inner) => wrapInline(inner, "*"))
+    .replace(/<code\b[^>]*>([\s\S]*?)<\/code\s*>/gi, (_, inner) => wrapInline(inner, "`"));
+}
+
+function indentContinuation(body, width) {
+  const pad = " ".repeat(width);
+  return body
+    .split("\n")
+    .map((line, index) => (index === 0 || !line.trim() ? line : pad + line))
+    .join("\n");
+}
+
+function listItems(inner) {
+  const closed = [...inner.matchAll(/<li\b[^>]*>([\s\S]*?)<\/li\s*>/gi)].map((m) => m[1]);
+  if (closed.length) return closed;
+  // Defensive: an unclosed <li> should still produce one item.
+  return inner
+    .split(/<li\b[^>]*>/i)
+    .slice(1)
+    .map((chunk) => chunk.replace(/<\/li\s*>/gi, ""));
+}
+
+function convertList(tag, inner) {
+  const ordered = tag.toLowerCase() === "ol";
+
+  const rendered = listItems(inner)
+    .map((raw, index) => {
+      const marker = ordered ? `${index + 1}. ` : "- ";
+      const body = raw
+        .replace(/<\/p\s*>/gi, "\n\n")
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/<[^>]+>/g, "")
+        .replace(/[ \t]+/g, " ")
+        .trim();
+      return body ? marker + indentContinuation(body, marker.length) : null;
+    })
+    .filter(Boolean)
+    .join("\n");
+
+  // Kramdown only recognises a list that is preceded by a blank line.
+  return rendered ? `\n\n${rendered}\n\n` : "\n\n";
+}
+
+// Innermost first, so a nested list is already Markdown by the time its parent
+// <li> gets flattened.
+function convertLists(html) {
+  const innermost = /<(ul|ol)\b[^>]*>((?:(?!<(?:ul|ol)\b)[\s\S])*?)<\/\1\s*>/i;
+
+  let out = html;
+  for (let guard = 0; guard < 100 && innermost.test(out); guard += 1) {
+    out = out.replace(innermost, (_, tag, inner) => convertList(tag, inner));
+  }
+  return out;
+}
+
+function convertHeadings(html) {
+  return html.replace(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1\s*>/gi, (_, level, inner) => {
+    // Trailing hashes in the text would be swallowed as closing-hash syntax.
+    const body = stripTags(inner).replace(/\s+/g, " ").trim().replace(/#+$/, "").trim();
+    return body ? `\n\n${"#".repeat(Number(level))} ${body}\n\n` : "\n\n";
+  });
+}
+
+function convertBreaks(html) {
+  return html
+    // A run of <br> separates paragraphs; a single one is a hard line break,
+    // which Kramdown spells as two trailing spaces.
+    .replace(/(?:\s*<br\s*\/?>\s*){2,}/gi, "\n\n")
+    .replace(/<br\s*\/?>/gi, "  \n");
+}
+
+function stripRemainingTags(html) {
+  return html.replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)\b[^>]*>/g, (_, tag) =>
+    BLOCK_TAGS.has(tag.toLowerCase()) ? "\n\n" : ""
+  );
+}
+
+function tidy(body) {
+  return body
+    .split("\n")
+    // Exactly two trailing spaces are a hard break; other trailing space is
+    // noise — and it has to go first, or a whitespace-only line would keep the
+    // blank-line runs below from collapsing.
+    .map((line) => (/\S {2}$/.test(line) ? line : line.replace(/\s+$/, "")))
+    .join("\n")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
+}
+
+function htmlToMarkdown(htmlOrText) {
+  const html = text(htmlOrText).replace(/\r/g, "");
+  if (!html) return "";
+
+  const links = [];
+
+  let out = html.replace(/<!--[\s\S]*?-->/g, "");
+  out = out.replace(/<(script|style)\b[\s\S]*?<\/\1\s*>/gi, "");
+  out = convertInline(out, links);
+  out = convertHeadings(out);
+  out = convertLists(out);
+  out = convertBreaks(out);
+  out = out.replace(/<\/p\s*>/gi, "\n\n");
+  out = stripRemainingTags(out);
+
+  // The feed double-encodes: xml2js resolves the CDATA, this resolves the
+  // entities inside the text itself (&amp;, &gt;, ...).
+  out = he.decode(out);
+
+  out = out.replace(
+    new RegExp(`${LINK_MARK}(\\d+)${LINK_MARK}`, "g"),
+    (_, index) => links[Number(index)]
+  );
+
+  return tidy(out);
 }
 
 function buildPostContent({ title, episode, body, episodeUrl, coverImage }) {
@@ -168,7 +345,7 @@ async function main() {
       continue;
     }
 
-    const body = cleanBody(item["content:encoded"] || item.description || "");
+    const body = htmlToMarkdown(item["content:encoded"] || item.description || "");
     const title = cleanTitle(rawTitle, paddedEpisode);
 
     const content = buildPostContent({
@@ -187,7 +364,22 @@ async function main() {
   console.log(`Done. Created ${createdCount} new file(s).`);
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(err);
+    process.exit(1);
+  });
+}
+
+// Shared with scripts/backfill-post-bodies.js, which re-renders the show notes
+// of episodes imported before the Markdown conversion existed.
+module.exports = {
+  RSS_URL,
+  POSTS_DIR,
+  ensureArray,
+  text,
+  formatDate,
+  padEpisode,
+  extractEpisodeNumber,
+  htmlToMarkdown,
+};
