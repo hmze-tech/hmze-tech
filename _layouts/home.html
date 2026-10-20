@@ -44,6 +44,19 @@ layout: default
   </section>
 
   <!-- ═══════════════════════════════════════════════════════════
+       SUBSCRIBE — compact Substack newsletter embed. Width is capped
+       by CSS so the fixed 480px iframe never overflows on phones.
+       ═══════════════════════════════════════════════════════════ -->
+  <section class="home-subscribe">
+    <iframe class="home-subscribe__embed"
+            src="https://beyondvibecoding.substack.com/embed"
+            width="480" height="150"
+            style="border: 1px solid #EEE; background: white"
+            frameborder="0" scrolling="no"
+            title="Subscribe to Beyond Vibe Coding on Substack"></iframe>
+  </section>
+
+  <!-- ═══════════════════════════════════════════════════════════
        LATEST EPISODE — featured card
        Cover image falls back to site.logo if cover_image not set.
        Description truncated at 40 words; "Read more" links to post.

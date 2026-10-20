@@ -577,6 +577,23 @@
 
 
 /* ------------------------------------------------------------------
+   Substack subscribe embed (home page) — between hero and featured
+   card.
+   ------------------------------------------------------------------ */
+
+.home-subscribe {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-5);
+}
+
+.home-subscribe__embed {
+  width: 100%;
+  max-width: 480px;
+}
+
+
+/* ------------------------------------------------------------------
    Episode accordion (home page) — <details>/<summary> rows.
    Collapsed: "S.01 EP.XX - Title" + "+" icon.
    Expanded: "×" icon, horizontal rule, then cover art, description,
