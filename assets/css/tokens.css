@@ -112,8 +112,10 @@
    * BORDER RADIUS
    * =================================================================== */
 
-  --radius-artwork:  30px;    /* episode cover / album art images    */
-  --radius-card:     60px;    /* episode list cards, footer panel    */
+  /* Card and artwork radii scale with the viewport so corners stay
+     proportional on phones; they reach the desktop values at ~1200px. */
+  --radius-artwork: clamp(16px, 2.5vw, 30px);  /* episode cover / album art images */
+  --radius-card:    clamp(24px, 5vw, 60px);    /* episode list cards, footer panel */
   --radius-pill:   1000px;    /* nav social-links pill (full-pill)   */
 
 
